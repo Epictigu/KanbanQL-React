@@ -1,0 +1,9 @@
+plugins {
+    id "com.github.node-gradle.node" version "4.0.0"
+}
+
+task buildFrontend {
+    group = "kanban-ql"
+    dependsOn(npmInstall)
+    dependsOn(npm_run_build)
+}
