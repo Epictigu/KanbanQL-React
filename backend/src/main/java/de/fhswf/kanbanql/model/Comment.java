@@ -6,23 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "kanban_user")
-public class User {
+public class Comment {
 
     @Id
     @GeneratedValue
     private String id;
 
-    private String username;
+    private String commentText;
 
-    @OneToMany(mappedBy = "user")
-    private List<Ticket>  ticket;
+    private LocalDateTime creationDate;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ticket_id")
+    private Ticket ticket;
 }

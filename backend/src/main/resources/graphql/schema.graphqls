@@ -1,3 +1,35 @@
 type Query {
-    firstQuery: String
+    getAllTickets: [TicketResponse]
+    getTicketById(id: String): TicketResponse
+}
+
+type TicketResponse {
+    id: String,
+    username: String,
+    title: String,
+    description: String,
+    status: Status,
+    priority: Priority,
+    tags: [TagResponse],
+    comment: String,
+
+}
+
+type TagResponse {
+    tagName: String
+}
+
+enum Status {
+    BACKLOG,
+    PLANNED,
+    IN_PROGRESS,
+    TO_REVIEW,
+    DONE
+}
+
+enum Priority {
+    LOW,
+    MEDIUM,
+    HIGH,
+    CRITICAL
 }

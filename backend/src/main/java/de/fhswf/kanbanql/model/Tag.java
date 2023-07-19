@@ -1,6 +1,9 @@
 package de.fhswf.kanbanql.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,16 +16,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "kanban_user")
-public class User {
+public class Tag {
 
     @Id
     @GeneratedValue
     private String id;
 
-    private String username;
+    private String tagName;
 
-    @OneToMany(mappedBy = "user")
-    private List<Ticket>  ticket;
+    @ManyToMany(mappedBy = "tags")
+    private List<Ticket> tickets;
 
 }
