@@ -6,8 +6,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+
 
 @Getter
 @Setter
@@ -33,9 +34,10 @@ public class TicketResponse {
 
 
     public TicketResponse(Ticket ticket) {
-
-        this.id =  ticket.getId();
-        this.username = ticket.getUser().getUsername();
+        this.id = ticket.getId();
+        this.username = Optional.ofNullable(ticket.getUser())
+                .map(User::getUsername)
+                .orElse("Kein Nutzer");
         this.title = ticket.getTitle();
         this.description = ticket.getDescription();
         this.status = ticket.getStatus();
@@ -43,8 +45,8 @@ public class TicketResponse {
 
         this.tags = new ArrayList<>();
 
-        for (Tag tag:
-             ticket.getTags()) {
+        for (Tag tag :
+                ticket.getTags()) {
 
             this.tags.add(new TagResponse(tag));
         }

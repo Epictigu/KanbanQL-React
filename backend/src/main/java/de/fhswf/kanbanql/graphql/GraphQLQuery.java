@@ -28,11 +28,9 @@ public class GraphQLQuery {
         return new TicketResponse(ticket);
     }
 
-
     @QueryMapping
-    public List<TicketResponse> getAllTickets(){
+    public List<Ticket> getAllTickets() {
 
-        return ticketService.getAllTickets().stream().
-                map(TicketResponse::new).toList();
+        return ticketService.getAllTickets();
     }
 }

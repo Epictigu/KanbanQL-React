@@ -14,6 +14,7 @@ import de.fhswf.kanbanql.request.update.UpdateTicketRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,19 +43,19 @@ public class TicketService {
     }
 
 
-    public Ticket createTicket(CreateTicketRequest ticketRequest){
+    public Ticket createTicket(@Nonnull CreateTicketRequest ticketRequest) {
 
         Ticket ticket = new Ticket();
         ticket.setTitle(ticketRequest.getTitle());
 
-        if(ticketRequest.getStatus() == null){
+        if (ticketRequest.getStatus() == null) {
             ticket.setStatus(Status.BACKLOG);
         } else {
             ticket.setStatus(ticketRequest.getStatus());
         }
 
         if(ticketRequest.getPriority() == null){
-            ticket.setPriority(Priority.NONE);
+            ticket.setPriority(Priority.LOW);
         } else {
             ticket.setPriority(ticketRequest.getPriority());
         }
@@ -68,10 +69,7 @@ public class TicketService {
         ticket.setComments(new ArrayList<>());
         ticket.setCreationDate(LocalDateTime.now());
 
-        ticketRepository.save(ticket);
-
-        return ticket;
-
+        return ticketRepository.save(ticket);
     }
 
     public Ticket updateTicket(UpdateTicketRequest updateTicketRequest){

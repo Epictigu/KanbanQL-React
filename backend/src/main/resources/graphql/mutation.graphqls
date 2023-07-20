@@ -1,0 +1,10 @@
+type Mutation {
+    createTicket(ticket: CreateTicketRequest!): TicketResponse
+}
+
+input CreateTicketRequest {
+    title: String!
+    username: String
+    status: Status
+    priority: Priority
+}

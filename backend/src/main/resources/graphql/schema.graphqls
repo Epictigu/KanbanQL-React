@@ -1,3 +1,5 @@
+scalar Timestamp
+
 type Query {
     getAllTickets: [TicketResponse]
     getTicketById(id: String): TicketResponse
@@ -12,7 +14,7 @@ type TicketResponse {
     priority: Priority,
     tags: [TagResponse],
     comment: String,
-
+    creationDate: Timestamp
 }
 
 type TagResponse {

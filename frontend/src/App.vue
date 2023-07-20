@@ -18,21 +18,30 @@ export default defineComponent({
 @import "./assets/colors.css";
 @import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 
+:root {
+    overflow-y: auto;
+}
+
 html,
 body {
-  margin: 0;
-  height: 100%;
+    margin: 0;
+    height: 100%;
 }
 
 #app {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 
-  display: flex;
-  flex-direction: column;
+    font-family: Roboto, serif;
+    background-color: var(--main-background-color);
 
-  .main-container {
-    flex: 1 1 auto;
-  }
+    display: flex;
+    flex-direction: column;
+
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+    }
 }
 </style>
