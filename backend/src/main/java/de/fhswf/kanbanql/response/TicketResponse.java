@@ -16,7 +16,7 @@ public class TicketResponse {
 
     private String id;
 
-    private String username;
+    private String userId;
 
     private String title;
 
@@ -35,8 +35,8 @@ public class TicketResponse {
 
     public TicketResponse(Ticket ticket) {
         this.id = ticket.getId();
-        this.username = Optional.ofNullable(ticket.getUser())
-                .map(User::getUsername)
+        this.userId = Optional.ofNullable(ticket.getUser())
+                .map(User::getId)
                 .orElse("Kein Nutzer");
         this.title = ticket.getTitle();
         this.description = ticket.getDescription();
@@ -58,7 +58,7 @@ public class TicketResponse {
             this.comments.add(new CommentResponse(comment));
         }
 
-        this.creationDate = ticket.getCreationDate();
+      //  this.creationDate = ticket.getCreationDate();
 
     }
 }

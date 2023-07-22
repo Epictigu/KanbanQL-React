@@ -11,28 +11,29 @@ import de.fhswf.kanbanql.request.create.CreateTicketRequest;
 import de.fhswf.kanbanql.request.update.UpdateCommentRequest;
 import de.fhswf.kanbanql.request.update.UpdateTagRequest;
 import de.fhswf.kanbanql.request.update.UpdateTicketRequest;
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class TicketService {
 
-    @Autowired
-    private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
+    private final TagRepository tagRepository;
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+
+    private final EntityManager entityManager;
 
     public Ticket getTicketById(String id){
         return ticketRepository.getReferenceById(id);
@@ -60,14 +61,13 @@ public class TicketService {
             ticket.setPriority(ticketRequest.getPriority());
         }
 
-        if(ticketRequest.getUsername() != null){
-            User user = userRepository.getUserByUsername(ticketRequest.getUsername());
-            ticket.setUser(user);
+        if(ticketRequest.getUserId() != null){
+            ticket.setUser(userRepository.getReferenceById(ticketRequest.getUserId()));
         }
 
-        ticket.setTags(new ArrayList<>());
+        ticket.setTags(new HashSet<>());
         ticket.setComments(new ArrayList<>());
-        ticket.setCreationDate(LocalDateTime.now());
+        ticket.setCreationDate(new Date());
 
         return ticketRepository.save(ticket);
     }
@@ -76,31 +76,34 @@ public class TicketService {
 
         Ticket ticket = ticketRepository.getReferenceById(updateTicketRequest.getId());
 
-        ticket.setUser(userRepository.getUserByUsername(updateTicketRequest.getUsername()));
+        if(updateTicketRequest.getUserId() != null){
+            ticket.setUser(userRepository.getReferenceById(updateTicketRequest.getUserId()));
+        }else{
+            ticket.setUser(null);
+        }
+
+
         ticket.setTitle(updateTicketRequest.getTitle());
         ticket.setDescription(updateTicketRequest.getDescription());
-        ticket.setStatus(updateTicketRequest.getStatus());
-        ticket.setPriority(updateTicketRequest.getPriority());
-
-        List<Tag> tags = new ArrayList<>();
-        for (UpdateTagRequest tagRequest:
-             updateTicketRequest.getTags()) {
-            tags.add(tagRepository.getReferenceById(tagRequest.getId()));
+        if(updateTicketRequest.getStatus() != null){
+            ticket.setStatus(updateTicketRequest.getStatus());
+        }
+        if(updateTicketRequest.getPriority() != null){
+            ticket.setPriority(updateTicketRequest.getPriority());
         }
 
+
+        Set<Tag> tags = new HashSet<>();
+        if(updateTicketRequest.getTags() != null && !updateTicketRequest.getTags().isEmpty()){
+
+            for (UpdateTagRequest tagRequest:
+                    updateTicketRequest.getTags()) {
+                tags.add(tagRepository.getReferenceById(tagRequest.getId()));
+            }
+
+        }
         ticket.setTags(tags);
-
-        List<Comment> comments = new ArrayList<>();
-        for (UpdateCommentRequest commentRequest:
-            updateTicketRequest.getComments()) {
-            comments.add(commentRepository.getReferenceById(commentRequest.getId()));
-        }
-
-        ticket.setComments(comments);
-
-        ticketRepository.save(ticket);
-
-        return ticket;
+        return ticketRepository.save(ticket);
 
     }
 
@@ -126,9 +129,8 @@ public class TicketService {
         Tag tag = new Tag();
         tag.setTagName(tagRequest.getTagName());
 
-        tagRepository.save(tag);
+        return tagRepository.save(tag);
 
-        return tag;
     }
 
     public Tag updateTag(UpdateTagRequest tagRequest){
@@ -136,22 +138,28 @@ public class TicketService {
         Tag tag = new Tag();
         tag.setTagName(tagRequest.getTagName());
 
-        List<Ticket> tickets = new ArrayList<>();
-        for (UpdateTicketRequest ticketRequest :
-                tagRequest.getTickets()) {
-            tickets.add(ticketRepository.getReferenceById(ticketRequest.getId()));
-        }
+//        Set<Ticket> tickets = new HashSet<>();
+//        for (UpdateTicketRequest ticketRequest :
+//                tagRequest.getTickets()) {
+//            tickets.add(ticketRepository.getReferenceById(ticketRequest.getId()));
+//        }
+//
+//        tag.setTickets(tickets);
 
-        tag.setTickets(tickets);
+        return tagRepository.save(tag);
 
-        tagRepository.save(tag);
-
-        return tag;
     }
+
 
     public Tag deleteTag(String id){
 
         Tag tag = tagRepository.getReferenceById(id);
+
+        for (Ticket ticket : tag.getTickets()) {
+            ticket.getTags().remove(tag);
+        }
+        entityManager.remove(tag);
+
         tagRepository.delete(tag);
 
         return tag;
@@ -171,11 +179,13 @@ public class TicketService {
         Comment comment = new Comment();
 
         comment.setCommentText(commentRequest.getCommentText());
-        comment.setCreationDate(LocalDateTime.now());
-        comment.setTicket(ticketRepository.getReferenceById(commentRequest.getTicketId()));
-        commentRepository.save(comment);
+        comment.setCreationDate(new Date());
+        if(commentRequest.getTicketId() != null){
+            comment.setTicket(ticketRepository.getReferenceById(commentRequest.getTicketId()));
+        }
 
-        return comment;
+
+        return commentRepository.save(comment);
     }
 
     public Comment updateComment(){
@@ -190,6 +200,12 @@ public class TicketService {
         return comment;
     }
 
+    public void createUser(List<User> users){
+        userRepository.saveAll(users);
+    }
 
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
 }

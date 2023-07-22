@@ -1,10 +1,46 @@
 type Mutation {
-    createTicket(ticket: CreateTicketRequest!): TicketResponse
+    createTicket(ticket: CreateTicketRequest): Ticket
+    createTag(tag: CreateTagRequest): Tag
+    createComment(comment: CreateCommentRequest): Comment
+    updateTicket(ticket: UpdateTicketRequest): Ticket
+    deleteTicket(id: String) : Ticket
+    deleteTag(id: String) : Tag
+
 }
 
 input CreateTicketRequest {
-    title: String!
-    username: String
+    title: String
+    userId: String
     status: Status
     priority: Priority
+}
+
+input CreateTagRequest{
+    tagName: String
+}
+
+input CreateCommentRequest{
+    commentText: String
+    ticketId: String
+}
+
+input UpdateTicketRequest{
+    id: String
+    userId: String
+    title: String
+    description: String
+    status: Status
+    priority: Priority
+    tags: [UpdateTagRequest]
+}
+
+input UpdateTagRequest{
+    id: String
+    tagName: String
+}
+
+input UpdateCommentRequest{
+    id: String
+    commentText: String
+    ticket: UpdateTicketRequest
 }

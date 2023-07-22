@@ -10,10 +10,6 @@ import java.time.LocalDateTime;
 public class UpdateCommentRequest {
 
     private String id;
-
     private String commentText;
-
-    private LocalDateTime creationDate;
-
     private UpdateTicketRequest ticket;
 }

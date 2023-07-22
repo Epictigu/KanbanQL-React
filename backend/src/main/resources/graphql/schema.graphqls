@@ -1,24 +1,38 @@
 scalar Timestamp
 
 type Query {
-    getAllTickets: [TicketResponse]
-    getTicketById(id: String): TicketResponse
+    getAllTickets: [Ticket]
+    getAllTags: [Tag]
+    getAllComments: [Comment]
+    getTicketById(id: String): Ticket
+    getTagById(id: String): Tag
+    getCommentById(id: String): Comment
+    getAllUsers: [User]
 }
 
-type TicketResponse {
+type Ticket{
     id: String,
-    username: String,
+    user: User,
     title: String,
     description: String,
     status: Status,
     priority: Priority,
-    tags: [TagResponse],
-    comment: String,
+    tags: [Tag],
+    comments: [Comment],
     creationDate: Timestamp
 }
 
-type TagResponse {
+type Tag {
+    id: String
     tagName: String
+    tickets: [Ticket]
+}
+
+type Comment {
+    id: String
+    commentText: String
+    creationDate: Timestamp
+    ticket: Ticket
 }
 
 enum Status {
@@ -34,4 +48,9 @@ enum Priority {
     MEDIUM,
     HIGH,
     CRITICAL
+}
+
+type User{
+    id:String
+    username: String
 }

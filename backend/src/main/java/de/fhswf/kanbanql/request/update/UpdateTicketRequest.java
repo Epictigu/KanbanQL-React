@@ -13,7 +13,7 @@ public class UpdateTicketRequest {
 
     private String id;
 
-    private String username;
+    private String userId;
 
     private String title;
 
@@ -25,5 +25,4 @@ public class UpdateTicketRequest {
 
     private List<UpdateTagRequest> tags;
 
-    private List<UpdateCommentRequest> comments;
 }

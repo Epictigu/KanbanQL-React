@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -23,9 +24,9 @@ public class Comment {
 
     private String commentText;
 
-    private LocalDateTime creationDate;
+    private Date creationDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 }

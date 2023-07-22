@@ -13,6 +13,6 @@ public class CommentResponse {
     public CommentResponse(Comment comment){
         this.id = comment.getId();
         this.commentText = comment.getCommentText();
-        this.creationDate = comment.getCreationDate();
+       // this.creationDate = comment.getCreationDate();
     }
 }

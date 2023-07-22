@@ -20,8 +20,8 @@ public class TimestampScalar {
                 .coercing(new Coercing<>() {
                     @Override
                     public Object serialize(@Nonnull Object input) throws CoercingSerializeException {
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.ENGLISH);
-                        return formatter.format((Date) input);
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.ENGLISH);
+                        return formatter.format(input);
                     }
 
                     @Nonnull
