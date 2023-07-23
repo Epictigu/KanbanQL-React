@@ -1,13 +1,15 @@
 package de.fhswf.kanbanql.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -26,11 +28,4 @@ public class Tag {
 
     @ManyToMany(mappedBy = "tags")
     private Set<Ticket> tickets;
-
-    @PreRemove
-    private void removeTicketAssociations() {
-        for (Ticket ticket: this.tickets) {
-            ticket.getTags().remove(this);
-        }
-    }
 }

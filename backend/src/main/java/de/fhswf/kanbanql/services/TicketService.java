@@ -8,18 +8,16 @@ import de.fhswf.kanbanql.repositories.UserRepository;
 import de.fhswf.kanbanql.request.create.CreateCommentRequest;
 import de.fhswf.kanbanql.request.create.CreateTagRequest;
 import de.fhswf.kanbanql.request.create.CreateTicketRequest;
-import de.fhswf.kanbanql.request.update.UpdateCommentRequest;
 import de.fhswf.kanbanql.request.update.UpdateTagRequest;
 import de.fhswf.kanbanql.request.update.UpdateTicketRequest;
 import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nonnull;
-import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -150,31 +148,34 @@ public class TicketService {
 
     }
 
-
-    public Tag deleteTag(String id){
-
+    @Transactional
+    public Tag deleteTag(String id) {
         Tag tag = tagRepository.getReferenceById(id);
+        Set<Ticket> tickets = tag.getTickets();
 
-        for (Ticket ticket : tag.getTickets()) {
-            ticket.getTags().remove(tag);
-        }
-        entityManager.remove(tag);
-
+        tickets.forEach(ticket -> deleteTagFromTicket(ticket, id));
+        ticketRepository.saveAll(tickets);
         tagRepository.delete(tag);
 
         return tag;
     }
 
+    private void deleteTagFromTicket(Ticket ticket, String tagId) {
+        Set<Tag> tags = ticket.getTags().stream()
+                .filter(tag -> !tag.getId().equals(tagId))
+                .collect(Collectors.toSet());
+        ticket.setTags(tags);
+    }
 
-    public Comment getCommentById(String id){
+    public Comment getCommentById(String id) {
         return commentRepository.getReferenceById(id);
     }
 
-    public List<Comment> getAllComments(){
+    public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
 
-    public Comment createComment(CreateCommentRequest commentRequest){
+    public Comment createComment(CreateCommentRequest commentRequest) {
 
         Comment comment = new Comment();
 
