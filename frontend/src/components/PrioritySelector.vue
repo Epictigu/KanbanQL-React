@@ -106,17 +106,18 @@ export default defineComponent({
 
 <style scoped lang="less">
 .priority-selector {
-  margin: 5px auto 5px 0;
-  position: relative;
+    margin: 5px auto 5px 0;
+    position: relative;
+    z-index: 16;
 
-  .priority-selector-overlay {
-    position: absolute;
-    left: 1em;
-    background: white;
-    border: 1px solid var(--navigation-border-color);
-    border-radius: 4px;
-    padding: 10px;
-    z-index: 100;
+    .priority-selector-overlay {
+        position: absolute;
+        left: 1em;
+        background: white;
+        border: 1px solid var(--navigation-border-color);
+        border-radius: 4px;
+        padding: 10px;
+        z-index: 100;
 
     .priority-selector-line {
       display: flex;

@@ -2,6 +2,7 @@
     <div class="ticket-card" v-if="ticket" :key="ticket.id"
          draggable="true"
          @dragstart="startDrag($event, ticket)">
+        <span class="double-click-checker" @click="selectTicket"/>
         <span class="ticket-name">{{ ticket.name }}</span>
         <PrioritySelector :current-priority="ticket.priority" @selectPriority="selectPriority"/>
         <div class="tag-list">
@@ -23,7 +24,7 @@
                 </div>
             </div>
         </div>
-        <BackgroundBlocker v-if="shouldShowTagList" @click="toggleTagEditor"/>
+        <BackgroundBlocker v-if="shouldShowTagList" @click="toggleTagEditor" :custom-z-index="14"/>
         <Modal ref="addTagModal" save-button-text="Hinzufügen" @modalSave="addTag">
             <template v-slot:modal-title>
                 Neuen Tag erstellen
@@ -52,6 +53,7 @@ import BackgroundBlocker from "@/components/utils/BackgroundBlocker.vue";
 
 export default defineComponent({
     name: "TicketCard",
+    emits: ["TicketSelect"],
     components: {
         BackgroundBlocker,
         Modal,
@@ -67,7 +69,8 @@ export default defineComponent({
     data() {
         return {
             shouldShowTagList: false,
-            newTagName: ""
+            newTagName: "",
+            doubleClickTimeout: null as number | null
         }
     },
     computed: {
@@ -118,6 +121,18 @@ export default defineComponent({
                 name: this.newTagName,
                 color: "#000000"
             })
+        },
+        selectTicket() {
+            if (!this.doubleClickTimeout) {
+                this.doubleClickTimeout = setTimeout(() => {
+                    this.doubleClickTimeout = null;
+                }, 300);
+            } else {
+                clearTimeout(this.doubleClickTimeout);
+                this.doubleClickTimeout = null;
+
+                this.$emit("TicketSelect", this.ticket);
+            }
         }
     }
 });
@@ -125,6 +140,7 @@ export default defineComponent({
 
 <style scoped>
 .ticket-card {
+    position: relative;
     flex-direction: column;
     display: flex;
     border: 1px solid var(--navigation-border-color);
@@ -136,14 +152,27 @@ export default defineComponent({
     box-shadow: var(--card-box-shadow-color) 1px 1px 2px;
     user-select: none;
 
+    .double-click-checker {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+    }
+
     .tag-list {
         display: flex;
+
+        .tag-view-container {
+            z-index: 15;
+        }
 
         .tag-edit-icon {
             margin-top: auto;
             margin-bottom: auto;
             padding: 5px;
             color: var(--card-tags-color);
+            z-index: 15;
 
             &:hover {
                 padding: 4px;

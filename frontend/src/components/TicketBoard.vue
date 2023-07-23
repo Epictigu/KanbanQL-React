@@ -4,30 +4,35 @@
             lane-name="Backlog"
             :lane-status="TicketStatus.BACKLOG"
             :tickets="ticketsByStatus(TicketStatus.BACKLOG)"
+            @TicketSelect="selectTicket"
         />
         <TicketLane
             lane-name="Geplant"
             lane-color="#C59916"
             :lane-status="TicketStatus.PLANNED"
             :tickets="ticketsByStatus(TicketStatus.PLANNED)"
+            @TicketSelect="selectTicket"
         />
         <TicketLane
             lane-name="In Arbeit"
             lane-color="#C70039"
             :lane-status="TicketStatus.IN_PROGRESS"
             :tickets="ticketsByStatus(TicketStatus.IN_PROGRESS)"
+            @TicketSelect="selectTicket"
         />
         <TicketLane
             lane-name="In Review"
             lane-color="#054AD5"
             :lane-status="TicketStatus.TO_REVIEW"
             :tickets="ticketsByStatus(TicketStatus.TO_REVIEW)"
+            @TicketSelect="selectTicket"
         />
         <TicketLane
             lane-name="Abgeschlossen"
             lane-color="#55AB3C"
             :lane-status="TicketStatus.DONE"
             :tickets="ticketsByStatus(TicketStatus.DONE)"
+            @TicketSelect="selectTicket"
         />
     </div>
 </template>
@@ -42,6 +47,7 @@ import {useTagStore} from "@/stores/tagStore";
 
 export default defineComponent({
     name: "TicketBoard",
+    emits: ["TicketSelect"],
     components: {
         TicketLane,
     },
@@ -64,6 +70,9 @@ export default defineComponent({
     methods: {
         ticketsByStatus(status: TicketStatus): Array<Ticket> {
             return this.tickets.filter(ticket => ticket.status === status);
+        },
+        selectTicket(ticket: Ticket) {
+            this.$emit("TicketSelect", ticket);
         }
     }
 });

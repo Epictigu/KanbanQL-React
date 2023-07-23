@@ -17,4 +17,7 @@
     --main-view-box-shadow-color: rgba(51, 51, 51, 0.7);
     --main-view-navigation-background-color: #eff0f3;
     --main-view-secondary-background-color: #fbfbfb;
+
+    --status-selector-background-color: #007bff;
+    --status-selector-text-color: #f8f8f8;
 }

@@ -1,19 +1,20 @@
 <template>
-    <div class="comment-header">
+    <div class="comment-header" v-if="ticket">
         <span class="creation-label">Erstellt am</span>
         <span class="creation-value">{{ formattedDate }}</span>
     </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, type PropType} from "vue";
+import type {TicketDetails} from "@/model/ticketDetails";
 
 export default defineComponent({
     name: "TicketCommentHeader",
     props: {
-        creationDate: {
-            type: Date,
-            default: new Date(2020, 2, 14, 16, 19, 1)
+        ticket: {
+            type: Object as PropType<TicketDetails>,
+            required: true
         }
     },
     computed: {
@@ -28,7 +29,7 @@ export default defineComponent({
                 second: '2-digit'
             } as Intl.DateTimeFormatOptions;
 
-            return this.creationDate.toLocaleDateString("de-DE", options);
+            return this.ticket.creationDate.toLocaleDateString("de-DE", options);
         }
     }
 });
@@ -36,23 +37,23 @@ export default defineComponent({
 
 <style scoped lang="less">
 .comment-header {
-  padding: 20px;
-  width: 100%;
-  height: 80px;
-  background-color: white;
-  border-bottom: 1px solid var(--navigation-border-color);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+    padding: 20px;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    border-bottom: 1px solid var(--navigation-border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-  .creation-label {
-    font-weight: 400;
-    font-size: 0.7em;
-    color: var(--basic-light-text-color);
-  }
+    .creation-label {
+        font-weight: 400;
+        font-size: 0.7em;
+        color: var(--basic-light-text-color);
+    }
 
-  .creation-value {
-    font-size: 0.9em;
-  }
+    .creation-value {
+        font-size: 0.9em;
+    }
 }
 </style>

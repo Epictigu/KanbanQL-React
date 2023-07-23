@@ -1,6 +1,6 @@
 <template>
     <div class="ticket-view-bar d-flex">
-        <i class="fa-solid fa-x ticket-view-close-button" role="button"/>
+        <i class="fa-solid fa-x ticket-view-close-button" role="button" @click="closeTicketView"/>
     </div>
 </template>
 
@@ -9,6 +9,12 @@ import {defineComponent} from "vue";
 
 export default defineComponent({
     name: "TicketViewHeader",
+    emits: ["CloseTicketView"],
+    methods: {
+        closeTicketView() {
+            this.$emit("CloseTicketView");
+        }
+    }
 });
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="click-blocker" :style="backgroundStyle"></div>
+    <div class="click-blocker" :style="style"></div>
 </template>
 
 <script lang="ts">
@@ -11,11 +11,22 @@ export default defineComponent({
         backgroundColor: {
             type: String,
             default: "transparent"
+        },
+        customZIndex: {
+            type: Number,
+            default: 50
         }
     },
     computed: {
         backgroundStyle(): string {
             return "background-color: " + this.backgroundColor;
+        },
+        zIndexStyle(): string {
+            return "z-index: " + this.customZIndex;
+        },
+        style(): string {
+            return this.backgroundStyle + ";"
+                + this.zIndexStyle;
         }
     }
 })

@@ -9,6 +9,7 @@
         <TicketCard
                 v-for="ticket in tickets"
                 :ticket="ticket"
+                @TicketSelect="selectTicket"
         />
     </div>
 </template>
@@ -22,6 +23,7 @@ import type {TicketStatus} from "@/enum/ticketStatus";
 
 export default defineComponent({
     name: "TicketLane",
+    emits: ["TicketSelect"],
     components: {
         TicketCard
     },
@@ -67,6 +69,9 @@ export default defineComponent({
 
             ticket.status = this.laneStatus;
             this.ticketStore.moveTicketToTheTop(ticket);
+        },
+        selectTicket(ticket: Ticket) {
+            this.$emit("TicketSelect", ticket);
         }
     }
 })
