@@ -2,9 +2,9 @@
     <div class="main-column-container">
         <TicketStatusBar :ticket="ticket" @CloseTicketView="closeTicketView"/>
         <div class="main-column">
-            <input type="text" id="name-field" v-model="newTitle" class="ticket-name-input"/>
+            <input type="text" id="name-field" v-model="newTitle" class="ticket-name-input" @focusout="saveNewTitle"/>
             <textarea type="text" id="name-field" v-model="newDescription" class="ticket-description-input"
-                      placeholder="Geben Sie hier eine Beschreibung ein..."/>
+                      placeholder="Geben Sie hier eine Beschreibung ein..." @focusout="saveNewDescription"/>
         </div>
     </div>
 </template>
@@ -13,6 +13,7 @@
 import {defineComponent, type PropType} from "vue";
 import TicketStatusBar from "@/components/ticketView/TicketStatusBar.vue";
 import type {TicketDetails} from "@/model/ticketDetails";
+import TicketService from "@/services/ticketService";
 
 export default defineComponent({
     name: "TicketMainColumn",
@@ -37,6 +38,17 @@ export default defineComponent({
     methods: {
         closeTicketView() {
             this.$emit("CloseTicketView");
+        },
+        saveNewTitle() {
+            if (this.newTitle === "") {
+                this.newTitle = this.ticket.title;
+                return;
+            }
+
+            TicketService.updateTitle(this.ticket.id, this.newTitle, this.ticket);
+        },
+        saveNewDescription() {
+            TicketService.updateDescription(this.ticket.id, this.newDescription, this.ticket);
         }
     }
 });

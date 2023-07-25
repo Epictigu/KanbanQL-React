@@ -2,7 +2,7 @@ export interface Tag {
 
     id: string;
 
-    name: string;
+    tagName: string;
 
     color: string;
 }

@@ -20,6 +20,7 @@ import type {Ticket} from "@/model/ticket";
 import TicketCard from "@/components/TicketCard.vue";
 import {useTicketStore} from "@/stores/ticketStore";
 import type {TicketStatus} from "@/enum/ticketStatus";
+import TicketService from "@/services/ticketService";
 
 export default defineComponent({
     name: "TicketLane",
@@ -67,7 +68,7 @@ export default defineComponent({
                 return;
             }
 
-            ticket.status = this.laneStatus;
+            TicketService.updateStatus(ticket.id, this.laneStatus);
             this.ticketStore.moveTicketToTheTop(ticket);
         },
         selectTicket(ticket: Ticket) {

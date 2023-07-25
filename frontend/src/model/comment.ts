@@ -2,7 +2,7 @@ export interface Comment {
 
     id: string;
 
-    name: string;
+    commentText: string;
 
     creationDate: Date;
 }

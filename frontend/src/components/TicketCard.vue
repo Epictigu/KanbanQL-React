@@ -3,10 +3,10 @@
          draggable="true"
          @dragstart="startDrag($event, ticket)">
         <span class="double-click-checker" @click="selectTicket"/>
-        <span class="ticket-name">{{ ticket.name }}</span>
+        <span class="ticket-name">{{ ticket.title }}</span>
         <PrioritySelector :current-priority="ticket.priority" @selectPriority="selectPriority"/>
         <div class="tag-list">
-            <TagView v-for="tagId in ticket.tags" :tag-id="tagId" :key="tagId"/>
+            <TagView v-for="tagId in ticket.tags" :tag-id="tagId.id" :key="tagId.id"/>
             <div class="tag-edit">
                 <i class="fa fa-solid fa-tags tag-edit-icon" @click="toggleTagEditor"/>
                 <div class="tag-selector-overlay" v-if="shouldShowTagList">
@@ -15,7 +15,7 @@
                          @click="selectTag(tag)"
                     >
                         <TagView :tag-id="tag.id"/>
-                        <i class="fa-solid fa-check ml-auto" v-if="ticket.tags.includes(tag.id)"/>
+                        <i class="fa-solid fa-check ml-auto" v-if="isTagSelected(tag)"/>
                     </div>
                     <hr class="hr mt-2 mb-2"/>
                     <div class="tag-selector-line" @click="openAddTagModal">
@@ -50,6 +50,9 @@ import {useTagStore} from "@/stores/tagStore";
 import type {Tag} from "@/model/tag";
 import Modal from "@/components/utils/Modal.vue";
 import BackgroundBlocker from "@/components/utils/BackgroundBlocker.vue";
+import type {TagId} from "@/model/tagId";
+import TicketService from "@/services/ticketService";
+import TagService from "@/services/tagService";
 
 export default defineComponent({
     name: "TicketCard",
@@ -85,19 +88,23 @@ export default defineComponent({
     },
     methods: {
         selectPriority(priority: Priority) {
-            this.ticket.priority = priority;
+            TicketService.updatePriority(this.ticket.id, priority);
         },
         toggleTagEditor() {
             this.shouldShowTagList = !this.shouldShowTagList;
         },
         selectTag(tag: Tag) {
-            let index = this.ticket.tags.indexOf(tag.id);
+            let index = this.ticket.tags.findIndex((tagId) => tag.id == tagId.id);
             if (index >= 0) {
                 this.ticket.tags.splice(index, 1);
-                return;
+            } else {
+                this.ticket.tags.push({id: tag.id} as TagId);
             }
-
-            this.ticket.tags.push(tag.id);
+            TicketService.updateTags(this.ticket);
+        },
+        isTagSelected(tag: Tag) {
+            let index = this.ticket.tags.findIndex((tagId) => tag.id == tagId.id);
+            return index >= 0;
         },
         startDrag(event: DragEvent, ticket: Ticket) {
             if (!event.dataTransfer) {
@@ -116,11 +123,11 @@ export default defineComponent({
             (this.$refs.addTagModal as typeof Modal).displayModal();
         },
         addTag() {
-            this.tagStore.tags.push({
-                id: (this.tags.length + 1) + "",
-                name: this.newTagName,
-                color: "#000000"
-            })
+            if (this.newTagName === "") {
+                return;
+            }
+            TagService.createNewTag(this.newTagName);
+            this.newTagName = "";
         },
         selectTicket() {
             if (!this.doubleClickTimeout) {

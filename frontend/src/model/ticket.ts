@@ -1,5 +1,6 @@
 import type {TicketStatus} from "@/enum/ticketStatus";
 import type {Priority} from "@/enum/priority";
+import type {TagId} from "@/model/tagId";
 
 export interface Ticket {
 
@@ -7,9 +8,9 @@ export interface Ticket {
 
     status: TicketStatus;
 
-    name: string;
+    title: string;
 
     priority: Priority;
 
-    tags: Array<string>;
+    tags: Array<TagId>;
 }

@@ -27,7 +27,16 @@ export default defineComponent({
     },
     methods: {
         selectTicket(ticket: Ticket) {
-            this.selectedTicket = TicketService.fetchTicketDetails(ticket.id);
+            TicketService.fetchTicketDetails(ticket.id)
+                .then(response => {
+                    this.selectedTicket = response.data.data.getTicketById;
+                    if (this.selectedTicket) {
+                        TicketService.fixTicketDetails(this.selectedTicket);
+                    }
+                }, (error) => {
+                    console.log("Error while fetching ticket details:");
+                    console.log(error);
+                });
         },
         closeTicketView() {
             this.selectedTicket = null;

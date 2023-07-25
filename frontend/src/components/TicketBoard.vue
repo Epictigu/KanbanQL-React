@@ -52,9 +52,8 @@ export default defineComponent({
         TicketLane,
     },
     setup() {
-        const ticketStore = useTicketStore();
         const tagStore = useTagStore();
-        ticketStore.initialize();
+        const ticketStore = useTicketStore();
         tagStore.initialize();
 
         return {ticketStore};

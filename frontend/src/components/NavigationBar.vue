@@ -23,7 +23,7 @@
         <template v-slot:modal-body>
             <div class="tag-line d-flex mb-2" v-for="tag in tags">
                 <TagView :tag-id="tag.id"/>
-                <i class="fa-solid fa-trash ml-auto text-center" role="button"/>
+                <i class="fa-solid fa-trash ml-auto text-center" role="button" @click="deleteTag(tag.id)"/>
             </div>
         </template>
     </Modal>
@@ -35,6 +35,7 @@ import Modal from "@/components/utils/Modal.vue";
 import TicketService from "@/services/ticketService";
 import {useTagStore} from "@/stores/tagStore";
 import TagView from "@/components/TagView.vue";
+import TagService from "@/services/tagService";
 
 export default defineComponent({
     name: "NavigationBar",
@@ -63,6 +64,9 @@ export default defineComponent({
         },
         createTicket() {
             TicketService.createNewTicketWithName(this.newTicketName);
+        },
+        deleteTag(id: string) {
+            TagService.deleteTag(id);
         }
     }
 });

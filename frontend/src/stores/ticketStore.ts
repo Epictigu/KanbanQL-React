@@ -1,7 +1,6 @@
 import type {Ticket} from "@/model/ticket";
 import {defineStore} from "pinia";
-import {TicketStatus} from "@/enum/ticketStatus";
-import {Priority} from "@/enum/priority";
+import TicketService from "@/services/ticketService";
 
 export const useTicketStore = defineStore('ticketStore', {
     state: () => ({
@@ -10,21 +9,17 @@ export const useTicketStore = defineStore('ticketStore', {
     getters: {},
     actions: {
         initialize(): void {
-            this.tickets.push({
-                id: "1",
-                status: TicketStatus.BACKLOG,
-                name: "Testticket",
-                priority: Priority.MEDIUM,
-                tags: ["1", "2"],
-            });
-
-            this.tickets.push({
-                id: "2",
-                status: TicketStatus.BACKLOG,
-                name: "Boarddesign erstellen",
-                priority: Priority.LOW,
-                tags: ["1"],
-            });
+            TicketService.fetchAllTickets()
+                .then(response => {
+                    this.tickets = response.data.data.getAllTickets;
+                    this.tickets.forEach(ticket =>
+                        ticket.status = TicketService.convertStatusToEnumValue(ticket.status));
+                    this.tickets.forEach(ticket =>
+                        ticket.priority = TicketService.convertPriorityToEnumValue(ticket.priority));
+                }, (error) => {
+                    console.log("Error while fetching all tickets:");
+                    console.log(error);
+                });
         },
         moveTicketToTheTop(ticket: Ticket): void {
             let index = this.tickets.indexOf(ticket);

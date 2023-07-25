@@ -1,6 +1,6 @@
 <template>
     <div class="tag-view-container" v-if="tag.id" :style="tagColorStyle">
-        <span class="tag-view-text">{{ tag.name }}</span>
+        <span class="tag-view-text">{{ tag.tagName }}</span>
     </div>
 </template>
 

@@ -25,7 +25,7 @@ import BackgroundBlocker from "@/components/utils/BackgroundBlocker.vue";
 export default defineComponent({
     name: "StatusSelector",
     components: {BackgroundBlocker},
-    emits: ["changeStatus"],
+    emits: ["ChangeStatus"],
     props: {
         status: {
             type: Number as PropType<TicketStatus>
@@ -68,7 +68,7 @@ export default defineComponent({
             this.selectorOpened = !this.selectorOpened;
         },
         setNewStatus(status: TicketStatus) {
-            this.$emit("changeStatus", status);
+            this.$emit("ChangeStatus", status);
             this.selectorOpened = false;
         }
     }

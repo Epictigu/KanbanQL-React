@@ -1,7 +1,7 @@
 <template>
     <div class="comment-container">
         <span class="comment-date">{{ formattedDate }}</span>
-        <span class="comment-text">{{ comment.name }}</span>
+        <span class="comment-text">{{ comment.commentText }}</span>
     </div>
 </template>
 

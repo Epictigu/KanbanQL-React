@@ -15,6 +15,7 @@
 import {defineComponent, type PropType} from "vue";
 import type {TicketDetails} from "@/model/ticketDetails";
 import CommentView from "@/components/ticketView/CommentView.vue";
+import TicketService from "@/services/ticketService";
 
 export default defineComponent({
     name: "TicketComments",
@@ -32,6 +33,7 @@ export default defineComponent({
     },
     methods: {
         addComment() {
+            TicketService.createComment(this.ticket.id, this.commentText)
             this.commentText = "";
         }
     }

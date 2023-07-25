@@ -74,33 +74,32 @@ public class TicketService {
 
         Ticket ticket = ticketRepository.getReferenceById(updateTicketRequest.getId());
 
-        if(updateTicketRequest.getUserId() != null){
+        if (updateTicketRequest.getUserId() != null) {
             ticket.setUser(userRepository.getReferenceById(updateTicketRequest.getUserId()));
-        }else{
+        } else {
             ticket.setUser(null);
         }
 
-
-        ticket.setTitle(updateTicketRequest.getTitle());
-        ticket.setDescription(updateTicketRequest.getDescription());
-        if(updateTicketRequest.getStatus() != null){
+        if (updateTicketRequest.getTitle() != null) {
+            ticket.setTitle(updateTicketRequest.getTitle());
+        }
+        if (updateTicketRequest.getDescription() != null) {
+            ticket.setDescription(updateTicketRequest.getDescription());
+        }
+        if (updateTicketRequest.getStatus() != null) {
             ticket.setStatus(updateTicketRequest.getStatus());
         }
-        if(updateTicketRequest.getPriority() != null){
+        if (updateTicketRequest.getPriority() != null) {
             ticket.setPriority(updateTicketRequest.getPriority());
         }
 
-
-        Set<Tag> tags = new HashSet<>();
-        if(updateTicketRequest.getTags() != null && !updateTicketRequest.getTags().isEmpty()){
-
-            for (UpdateTagRequest tagRequest:
-                    updateTicketRequest.getTags()) {
+        if (updateTicketRequest.getTags() != null) {
+            Set<Tag> tags = new HashSet<>();
+            for (UpdateTagRequest tagRequest : updateTicketRequest.getTags()) {
                 tags.add(tagRepository.getReferenceById(tagRequest.getId()));
             }
-
+            ticket.setTags(tags);
         }
-        ticket.setTags(tags);
         return ticketRepository.save(ticket);
 
     }

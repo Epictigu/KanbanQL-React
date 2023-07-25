@@ -1,5 +1,7 @@
 import {defineStore} from "pinia";
 import type {Tag} from "@/model/tag";
+import TagService from "@/services/tagService";
+import {useTicketStore} from "@/stores/ticketStore";
 
 export const useTagStore = defineStore('tagStore', {
     state: () => ({
@@ -8,17 +10,19 @@ export const useTagStore = defineStore('tagStore', {
     getters: {},
     actions: {
         initialize(): void {
-            this.tags.push({
-                id: "1",
-                name: "Backend",
-                color: "#eb4034"
-            });
-
-            this.tags.push({
-                id: "2",
-                name: "Frontend",
-                color: "#3489eb"
-            });
+            TagService.fetchAllTags()
+                .then(response => {
+                    this.tags = response.data.data.getAllTags;
+                    this.fillInRandomColors();
+                    useTicketStore().initialize();
+                })
+        },
+        fillInRandomColors(): void {
+            this.tags.forEach(tag => tag.color = this.generateRandomColor());
+        },
+        generateRandomColor(): string {
+            let hexColorString = (Math.random() * 0xfffff * 1000000).toString(16);
+            return '#' + hexColorString.slice(0, 6);
         }
     }
 });
