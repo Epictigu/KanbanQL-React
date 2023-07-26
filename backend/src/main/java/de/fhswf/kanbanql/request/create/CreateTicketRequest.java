@@ -10,8 +10,6 @@ import lombok.Setter;
 @Setter
 public class CreateTicketRequest {
 
-    private String userId;
-
     private String title;
 
     private Status status;

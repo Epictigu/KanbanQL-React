@@ -7,12 +7,10 @@ type Query {
     getTicketById(id: String): Ticket
     getTagById(id: String): Tag
     getCommentById(id: String): Comment
-    getAllUsers: [User]
 }
 
 type Ticket{
     id: String,
-    user: User,
     title: String,
     description: String,
     status: Status,
@@ -48,9 +46,4 @@ enum Priority {
     MEDIUM,
     HIGH,
     CRITICAL
-}
-
-type User{
-    id:String
-    username: String
 }

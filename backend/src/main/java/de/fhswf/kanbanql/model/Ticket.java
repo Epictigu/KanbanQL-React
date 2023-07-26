@@ -23,10 +23,6 @@ public class Ticket {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "kanban_user_id")
-    private User user;
-
     private String title;
 
     private String description;

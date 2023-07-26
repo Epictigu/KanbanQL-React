@@ -4,13 +4,11 @@ import de.fhswf.kanbanql.model.*;
 import de.fhswf.kanbanql.repositories.CommentRepository;
 import de.fhswf.kanbanql.repositories.TagRepository;
 import de.fhswf.kanbanql.repositories.TicketRepository;
-import de.fhswf.kanbanql.repositories.UserRepository;
 import de.fhswf.kanbanql.request.create.CreateCommentRequest;
 import de.fhswf.kanbanql.request.create.CreateTagRequest;
 import de.fhswf.kanbanql.request.create.CreateTicketRequest;
 import de.fhswf.kanbanql.request.update.UpdateTagRequest;
 import de.fhswf.kanbanql.request.update.UpdateTicketRequest;
-import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,19 +23,15 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
 
-    private final UserRepository userRepository;
-
     private final TagRepository tagRepository;
 
     private final CommentRepository commentRepository;
 
-    private final EntityManager entityManager;
-
-    public Ticket getTicketById(String id){
+    public Ticket getTicketById(String id) {
         return ticketRepository.getReferenceById(id);
     }
 
-    public List<Ticket> getAllTickets(){
+    public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }
 
@@ -53,14 +47,10 @@ public class TicketService {
             ticket.setStatus(ticketRequest.getStatus());
         }
 
-        if(ticketRequest.getPriority() == null){
+        if (ticketRequest.getPriority() == null) {
             ticket.setPriority(Priority.LOW);
         } else {
             ticket.setPriority(ticketRequest.getPriority());
-        }
-
-        if(ticketRequest.getUserId() != null){
-            ticket.setUser(userRepository.getReferenceById(ticketRequest.getUserId()));
         }
 
         ticket.setTags(new HashSet<>());
@@ -70,15 +60,9 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicket(UpdateTicketRequest updateTicketRequest){
+    public Ticket updateTicket(UpdateTicketRequest updateTicketRequest) {
 
         Ticket ticket = ticketRepository.getReferenceById(updateTicketRequest.getId());
-
-        if (updateTicketRequest.getUserId() != null) {
-            ticket.setUser(userRepository.getReferenceById(updateTicketRequest.getUserId()));
-        } else {
-            ticket.setUser(null);
-        }
 
         if (updateTicketRequest.getTitle() != null) {
             ticket.setTitle(updateTicketRequest.getTitle());
@@ -104,7 +88,7 @@ public class TicketService {
 
     }
 
-    public Ticket deleteTicket(String id){
+    public Ticket deleteTicket(String id) {
 
         Ticket ticket = ticketRepository.getReferenceById(id);
 
@@ -113,15 +97,15 @@ public class TicketService {
         return ticket;
     }
 
-    public Tag getTagById(String id){
+    public Tag getTagById(String id) {
         return tagRepository.getReferenceById(id);
     }
 
-    public List<Tag> getAllTags(){
+    public List<Tag> getAllTags() {
         return tagRepository.findAll();
     }
 
-    public Tag createTag(CreateTagRequest tagRequest){
+    public Tag createTag(CreateTagRequest tagRequest) {
 
         Tag tag = new Tag();
         tag.setTagName(tagRequest.getTagName());
@@ -130,7 +114,7 @@ public class TicketService {
 
     }
 
-    public Tag updateTag(UpdateTagRequest tagRequest){
+    public Tag updateTag(UpdateTagRequest tagRequest) {
 
         Tag tag = new Tag();
         tag.setTagName(tagRequest.getTagName());
@@ -180,7 +164,7 @@ public class TicketService {
 
         comment.setCommentText(commentRequest.getCommentText());
         comment.setCreationDate(new Date());
-        if(commentRequest.getTicketId() != null){
+        if (commentRequest.getTicketId() != null) {
             comment.setTicket(ticketRepository.getReferenceById(commentRequest.getTicketId()));
         }
 
@@ -188,24 +172,16 @@ public class TicketService {
         return commentRepository.save(comment);
     }
 
-    public Comment updateComment(){
+    public Comment updateComment() {
         return new Comment();
     }
 
-    public Comment deleteComment(String id){
+    public Comment deleteComment(String id) {
 
         Comment comment = commentRepository.getReferenceById(id);
         commentRepository.delete(comment);
 
         return comment;
-    }
-
-    public void createUser(List<User> users){
-        userRepository.saveAll(users);
-    }
-
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
     }
 
 }
