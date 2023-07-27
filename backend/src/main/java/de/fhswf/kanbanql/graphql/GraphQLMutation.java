@@ -7,6 +7,7 @@ import de.fhswf.kanbanql.request.create.CreateCommentRequest;
 import de.fhswf.kanbanql.request.create.CreateTagRequest;
 import de.fhswf.kanbanql.request.create.CreateTicketRequest;
 import de.fhswf.kanbanql.request.update.UpdateTicketRequest;
+import de.fhswf.kanbanql.services.CommentService;
 import de.fhswf.kanbanql.services.TicketService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 public class GraphQLMutation {
 
     private final TicketService ticketService;
+    private final CommentService commentService;
 
     @MutationMapping
     public Ticket createTicket(@Argument CreateTicketRequest ticket) {
@@ -30,7 +32,9 @@ public class GraphQLMutation {
     }
 
     @MutationMapping
-    public Comment createComment(@Argument CreateCommentRequest comment){ return ticketService.createComment(comment); }
+    public Comment createComment(@Argument CreateCommentRequest comment) {
+        return commentService.createComment(comment);
+    }
 
     @MutationMapping
     public Ticket updateTicket(@Argument UpdateTicketRequest ticket){ return ticketService.updateTicket(ticket); }

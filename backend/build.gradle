@@ -39,7 +39,7 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-rsocket', version: '3.1.2'
-
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '3.1.2'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

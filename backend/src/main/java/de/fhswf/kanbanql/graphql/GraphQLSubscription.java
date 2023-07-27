@@ -6,9 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.stereotype.Controller;
 import reactor.core.publisher.Flux;
+
 import java.time.Duration;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 
@@ -16,20 +16,11 @@ import java.util.stream.Stream;
 @Controller
 public class GraphQLSubscription {
 
-    private final TicketService ticketService;
+    private final TicketService commentService;
 
     @SubscriptionMapping
     Flux<List<Comment>> comments(){
-        return Flux.fromStream(Stream.generate(
-                        new Supplier<List<Comment>>() {
-                            @Override
-                            public List<Comment> get() {
-                                List<Comment> comments = ticketService.getAllComments();
-
-                                return comments;
-                            }
-                        }
-                ))
+        return Flux.fromStream(Stream.generate(commentService::getAllComments))
                 .delayElements(Duration.ofSeconds(1));
     }
 }

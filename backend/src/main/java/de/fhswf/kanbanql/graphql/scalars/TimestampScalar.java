@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 @Component

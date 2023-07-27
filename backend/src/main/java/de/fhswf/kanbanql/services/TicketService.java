@@ -4,7 +4,6 @@ import de.fhswf.kanbanql.model.*;
 import de.fhswf.kanbanql.repositories.CommentRepository;
 import de.fhswf.kanbanql.repositories.TagRepository;
 import de.fhswf.kanbanql.repositories.TicketRepository;
-import de.fhswf.kanbanql.request.create.CreateCommentRequest;
 import de.fhswf.kanbanql.request.create.CreateTagRequest;
 import de.fhswf.kanbanql.request.create.CreateTicketRequest;
 import de.fhswf.kanbanql.request.update.UpdateTagRequest;
@@ -156,20 +155,6 @@ public class TicketService {
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
-    }
-
-    public Comment createComment(CreateCommentRequest commentRequest) {
-
-        Comment comment = new Comment();
-
-        comment.setCommentText(commentRequest.getCommentText());
-        comment.setCreationDate(new Date());
-        if (commentRequest.getTicketId() != null) {
-            comment.setTicket(ticketRepository.getReferenceById(commentRequest.getTicketId()));
-        }
-
-
-        return commentRepository.save(comment);
     }
 
     public Comment updateComment() {

@@ -9,6 +9,10 @@ type Query {
     getCommentById(id: String): Comment
 }
 
+type Subscription {
+    comments: [Comment]
+}
+
 type Ticket{
     id: String,
     title: String,
