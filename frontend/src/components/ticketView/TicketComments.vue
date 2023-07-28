@@ -33,7 +33,7 @@ export default defineComponent({
     },
     methods: {
         addComment() {
-            TicketService.createComment(this.ticket.id, this.commentText)
+            TicketService.createComment(this.ticket, this.commentText)
             this.commentText = "";
         }
     }

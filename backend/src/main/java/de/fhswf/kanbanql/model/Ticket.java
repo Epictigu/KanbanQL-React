@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The comment data model to provide various attributes needed for a ticket inside of a kanban board.
+ */
 @Entity
 @Getter
 @Setter
@@ -39,7 +42,4 @@ public class Ticket {
     private List<Comment> comments;
 
     private Date creationDate;
-
-
-
 }

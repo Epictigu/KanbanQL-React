@@ -55,10 +55,35 @@ class TicketService {
         return await axios.post(API_URL, data);
     }
 
+    public fetchUpdatedCommentList(ticket: TicketDetails) {
+        const data = {
+            query: `
+            query getAllCommentsForTicketId($id: String!) {
+                getAllCommentsForTicketId(id: $id) {
+                    id,
+                    commentText,
+                    creationDate
+                }
+            }`,
+            variables: {
+                id: ticket.id
+            }
+        }
+        axios.post(API_URL, data)
+            .then((result) => {
+                ticket.comments = result.data.data.getAllCommentsForTicketId;
+                this.fixTicketDetailsComments(ticket);
+            });
+    }
+
     public fixTicketDetails(ticket: TicketDetails): void {
         ticket.status = this.convertStatusToEnumValue(ticket.status);
         ticket.priority = this.convertPriorityToEnumValue(ticket.priority);
         ticket.creationDate = this.formatDateFromResponse(ticket.creationDate.toString());
+        this.fixTicketDetailsComments(ticket);
+    }
+
+    private fixTicketDetailsComments(ticket: TicketDetails): void {
         ticket.comments.forEach((comment) => comment.creationDate = this.formatDateFromResponse(comment.creationDate.toString()));
     }
 
@@ -264,7 +289,7 @@ class TicketService {
                 (error) => console.log(error));
     }
 
-    public createComment(id: string, comment: string): void {
+    public createComment(ticket: TicketDetails, comment: string): void {
         const data = {
             query: `
             mutation createComment($id: String!, $comment: String!) {
@@ -279,13 +304,13 @@ class TicketService {
                 }
             }`,
             variables: {
-                id,
+                id: ticket.id,
                 comment
             }
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
+                    this.fetchUpdatedCommentList(ticket);
                 },
                 (error) => console.log(error));
     }

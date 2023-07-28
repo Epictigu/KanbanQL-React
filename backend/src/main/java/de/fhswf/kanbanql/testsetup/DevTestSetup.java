@@ -4,7 +4,6 @@ import de.fhswf.kanbanql.model.Priority;
 import de.fhswf.kanbanql.model.Status;
 import de.fhswf.kanbanql.model.Tag;
 import de.fhswf.kanbanql.model.Ticket;
-import de.fhswf.kanbanql.repositories.CommentRepository;
 import de.fhswf.kanbanql.repositories.TagRepository;
 import de.fhswf.kanbanql.repositories.TicketRepository;
 import jakarta.annotation.PostConstruct;
@@ -18,6 +17,12 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * A basic test setup that is to be used for development. In developer mode an H2 In-Memory database is used for data persistence, which means that
+ * upon restarting of the application, the data will also be reset. For exactly this purpose, a system of test setups is used to write initial data
+ * if the application is started in developer mode. To ensure, that the setup is not run on production, it is only provided based on a property set
+ * inside the spring application properties, which is managed by the specific gradle task.
+ */
 @Transactional
 @Component
 @ConditionalOnProperty(name = "kanban-ql.setup", havingValue = "dev")
@@ -26,7 +31,6 @@ public class DevTestSetup {
 
     private final TagRepository tagRepository;
     private final TicketRepository ticketRepository;
-    private final CommentRepository commentRepository;
 
     private Tag frontendTag;
     private Tag backendTag;

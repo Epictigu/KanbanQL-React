@@ -19,12 +19,12 @@ jobs:
           distribution: 'adopt'
           java-version: 17
 
-      - name: Build KanbanQL
-        run: gradle build
+      - name: Run Unit-Tests
+        run: gradle test
         env:
           CI: true
 
-      - name: Run Unit-Tests
-        run: gradle test
+      - name: Build KanbanQL
+        run: gradle build
         env:
           CI: true

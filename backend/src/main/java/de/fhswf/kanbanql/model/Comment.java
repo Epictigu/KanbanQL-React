@@ -6,8 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 
+/**
+ * The comment data model to provide the possibility of multiple comments on {@link Ticket tickets}.
+ */
 @Entity
 @Getter
 @Setter

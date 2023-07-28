@@ -8,6 +8,10 @@ import javax.annotation.Nonnull;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/**
+ * A basic timestamp scalar, as by default graphql doesn't support date and time formats. As a date format can contain time as well as the date
+ * itself, this scalar works by converting a simple date into its string form.
+ */
 @Component
 public class TimestampScalar {
 
@@ -34,6 +38,7 @@ public class TimestampScalar {
                     public Object parseLiteral(@Nonnull Object input) throws CoercingParseLiteralException {
                         return input.toString();
                     }
-                }).build();
+                })
+                .build();
     }
 }

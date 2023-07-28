@@ -12,6 +12,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Set;
 
+/**
+ * The tag data model to provide the possibility of multiple tags on {@link Ticket tickets}.
+ */
 @Entity
 @Getter
 @Setter
