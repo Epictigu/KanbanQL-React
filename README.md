@@ -1,7 +1,8 @@
+*For the original project written with a Vue-Frontend, please visit [https://github.com/Epictigu/KanbanQL](https://github.com/Epictigu/KanbanQL).*
+
 # KanbanQL
 
-This application provides a basic Kanban Board with the help of Java Spring and Vue. This is meant to showcase the
-features of GraphQL together with the provided api from Java Spring and basic frontend tools from Vue.
+*Explanation goes here*
 
 To run this app in development, just run the "runBackend" task. This starts the backend together with a H2 In-Memory database.
 To start the frontend additionally, under Windows a batch file ("runFrontend.bat") is provided to run and install the frontend,
