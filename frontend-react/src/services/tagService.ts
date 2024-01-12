@@ -1,6 +1,5 @@
 import type {AxiosResponse} from "axios";
 import axios from "axios";
-import {useTagStore} from "@/stores/tagStore";
 
 const API_URL = 'http://localhost:8080/graphql';
 
@@ -32,7 +31,7 @@ class TagService {
             }
         }
         axios.post(API_URL, data)
-            .then((response) => useTagStore().initialize(),
+            .then((response) => console.log(response),
                 (error) => console.log(error));
     }
 
@@ -49,9 +48,7 @@ class TagService {
             }
         }
         axios.post(API_URL, data)
-            .then((response) => {
-                    useTagStore().initialize();
-                },
+            .then((response) => console.log(response),
                 (error) => console.log(error));
     }
 }

@@ -1,8 +1,7 @@
-import {useTicketStore} from "@/stores/ticketStore";
-import type {Ticket} from "@/model/ticket";
-import {Priority} from "@/enum/priority";
-import type {TicketDetails} from "@/model/ticketDetails";
-import {TicketStatus} from "@/enum/ticketStatus";
+import type {Ticket} from "../model/ticket";
+import {Priority} from "../enum/priority";
+import type {TicketDetails} from "../model/ticketDetails";
+import {TicketStatus} from "../enum/ticketStatus";
 import axios, {type AxiosResponse} from "axios";
 
 const API_URL = 'http://localhost:8080/graphql';
@@ -126,7 +125,7 @@ class TicketService {
             }
         }
         axios.post(API_URL, data)
-            .then(() => useTicketStore().initialize(),
+            .then(() => console.log(),
                 (error) => console.log(error));
     }
 
@@ -143,7 +142,7 @@ class TicketService {
             }
         }
         axios.post(API_URL, data)
-            .then(() => useTicketStore().initialize(),
+            .then(() => console.log(),
                 (error) => console.log(error));
     }
 
@@ -168,7 +167,6 @@ class TicketService {
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
                     if (ticketDetails) {
                         ticketDetails.priority = priority;
                     }
@@ -197,7 +195,6 @@ class TicketService {
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
                     if (ticketDetails) {
                         ticketDetails.status = status;
                     }
@@ -226,7 +223,6 @@ class TicketService {
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
                 },
                 (error) => console.log(error));
     }
@@ -252,7 +248,6 @@ class TicketService {
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
                     if (ticketDetails) {
                         ticketDetails.title = title;
                     }
@@ -281,7 +276,6 @@ class TicketService {
         };
         axios.post(API_URL, data)
             .then(() => {
-                    useTicketStore().initialize();
                     if (ticketDetails) {
                         ticketDetails.description = description;
                     }

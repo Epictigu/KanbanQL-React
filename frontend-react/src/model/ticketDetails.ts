@@ -1,6 +1,6 @@
-import type {TicketStatus} from "@/enum/ticketStatus";
-import type {Priority} from "@/enum/priority";
-import type {Comment} from "@/model/comment";
+import type {Priority} from "../enum/priority";
+import type {TicketStatus} from "../enum/ticketStatus.ts";
+import type {Comment} from "./comment.ts";
 
 export interface TicketDetails {
 

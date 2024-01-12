@@ -1,10 +1,10 @@
 task buildFullProject(type: Copy) {
     group = "kanban-ql"
 
-    dependsOn(":frontend:buildFrontend")
+    dependsOn(":frontend-react:buildFrontend")
     dependsOn(":backend:processResources")
 
-    from "frontend/build/dist/"
+    from "frontend-react/build/dist/"
     into "backend/src/main/resources/public/"
 
     finalizedBy(":backend:build")
