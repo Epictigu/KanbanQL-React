@@ -1,5 +1,9 @@
+import NavigationBar from "./NavigationBar.tsx";
+
 function Home() {
-    return <></>
+    return <>
+        <NavigationBar/>
+    </>
 }
 
 export default Home;
