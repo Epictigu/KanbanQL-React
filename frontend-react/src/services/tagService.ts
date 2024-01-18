@@ -1,55 +1,54 @@
-import type {AxiosResponse} from "axios";
-import axios from "axios";
+import {ApolloClient, ApolloQueryResult, gql, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
 
 const API_URL = 'http://localhost:8080/graphql';
 
 class TagService {
 
-    async fetchAllTags(): Promise<AxiosResponse> {
-        const data = {
-            query: `
-            query {
-                getAllTags {
-                    id,
-                    tagName
-                }
-            }`
-        }
-        return await axios.post(API_URL, data);
+    client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+        uri: API_URL,
+        cache: new InMemoryCache()
+    });
+
+    async fetchAllTags(): Promise<ApolloQueryResult<any>> {
+        return await this.client.query({
+            query: gql`
+                query {
+                    getAllTags {
+                        id,
+                        tagName
+                    }
+                }`
+        });
     }
 
     createNewTag(title: string): void {
-        const data = {
-            query: `
-            mutation createTag($title: String!) {
-                createTag (tag: {tagName: $title}) {
-                    id
-                }
-            }`,
+        this.client.query({
+            query: gql`
+                mutation createTag($title: String!) {
+                    createTag (tag: {tagName: $title}) {
+                        id
+                    }
+                }`,
             variables: {
                 title
             }
-        }
-        axios.post(API_URL, data)
-            .then((response) => console.log(response),
-                (error) => console.log(error));
+        }).then((response) => console.log(response),
+            (error) => console.log(error));
     }
 
     deleteTag(id: string): void {
-        const data = {
-            query: `
-            mutation deleteTag($id: String!) {
-                deleteTag (id: $id) {
-                    id
-                }
-            }`,
+        this.client.query({
+            query: gql`
+                mutation deleteTag($id: String!) {
+                    deleteTag (id: $id) {
+                        id
+                    }
+                }`,
             variables: {
                 id
             }
-        }
-        axios.post(API_URL, data)
-            .then((response) => console.log(response),
-                (error) => console.log(error));
+        }).then((response) => console.log(response),
+            (error) => console.log(error));
     }
 }
 
