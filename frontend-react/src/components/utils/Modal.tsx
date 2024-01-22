@@ -1,4 +1,5 @@
 import './Modal.less'
+import {ReactNode} from "react";
 
 const defaultProps = {
     saveButtonShow: false,
@@ -6,16 +7,22 @@ const defaultProps = {
     saveButtonText: "Ok",
     saveButtonClass: "btn-success",
     size: "",
-    cancelButtonText: "Abbrechen"
+    cancelButtonText: "Abbrechen",
+    onSave: () => {
+    }
 }
 type DefaultProps = Partial<typeof defaultProps>;
 type ModalProps = {
     showModal: boolean;
-    onSave: () => void;
+    title: string;
+
     onCancel: () => void;
+
+    children: ReactNode;
 } & DefaultProps;
 
 function Modal(props: ModalProps) {
+    console.log(props.saveButtonText);
     return props.showModal && (
         <div className="modal-container">
             <span className="modal-background" onClick={props.onCancel}/>
@@ -25,14 +32,14 @@ function Modal(props: ModalProps) {
                         <div className={"modal-content " + props.size}>
                             <div className="modal-header">
                                 <h5 className="modal-title">
-                                    <slot name="modal-title"></slot>
+                                    {props.title}
                                 </h5>
                                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true" onClick={props.onCancel}>&times;</span>
                                 </button>
                             </div>
                             <div className="modal-body">
-                                <slot name="modal-body"></slot>
+                                {props.children}
                             </div>
                             {props.footerShow &&
                                 <div className="modal-footer">
@@ -53,5 +60,7 @@ function Modal(props: ModalProps) {
         </div>
     )
 }
+
+Modal.defaultProps = defaultProps;
 
 export default Modal;

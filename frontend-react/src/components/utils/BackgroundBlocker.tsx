@@ -17,4 +17,6 @@ function BackgroundBlocker(props: BackgroundProps) {
     </>)
 }
 
+BackgroundBlocker.defaultProps = defaultProps;
+
 export default BackgroundBlocker;
