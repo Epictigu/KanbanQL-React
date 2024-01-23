@@ -4,16 +4,19 @@ const defaultProps = {
     backgroundColor: "transparent",
     customZIndex: 50
 }
-type BackgroundProps = Partial<typeof defaultProps>;
+type DefaultProps = Partial<typeof defaultProps>;
+type BackgroundBlockerProps = {
+    onClick: () => void
+} & DefaultProps;
 
-function BackgroundBlocker(props: BackgroundProps) {
+function BackgroundBlocker(props: BackgroundBlockerProps) {
     const style: CSSProperties = {
         backgroundColor: props.backgroundColor,
         zIndex: props.customZIndex
     }
 
     return (<>
-        <div className="click-blocker" style={style}></div>
+        <div className="click-blocker" style={style} onClick={props.onClick}></div>
     </>)
 }
 
