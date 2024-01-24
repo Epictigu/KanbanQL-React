@@ -1,11 +1,13 @@
 import './App.less'
+import "bootstrap/dist/css/bootstrap.css";
+import Home from "./components/Home.tsx";
 
 function App() {
     return (
         <div id="app">
-            Test123
+            <Home/>
         </div>
     )
 }
 
-export default App
+export default App;
