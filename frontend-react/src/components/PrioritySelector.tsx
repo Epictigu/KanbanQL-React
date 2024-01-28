@@ -1,11 +1,13 @@
+import "./PrioritySelector.less"
 import BackgroundBlocker from "./utils/BackgroundBlocker.tsx";
 import {ReactNode, useState} from "react";
 import {Priority} from "../enum/priority.ts";
 
 interface PrioritySelectorProps {
     currentPriority: Priority;
-    children: ReactNode;
+    children?: ReactNode;
     selectPriority: (priority: Priority) => void;
+    className: string;
 }
 
 function getColorStyleForPriority(priority: Priority) {
@@ -51,28 +53,34 @@ function PrioritySelector(props: PrioritySelectorProps) {
         setShouldShowSelector(!shouldShowSelector);
     }
 
+    const prioritySelected = (priority: Priority) => {
+        toggleSelector();
+        props.selectPriority(priority)
+    }
+
     return (
-        <div className="priority-selector">
+        <div className={`priority-selector ${props.className}`}>
+            {props.children ?? ""}
             <>
                 <i className="fa-solid fa-flag selector-icon"
                    style={getColorStyleForPriority(props.currentPriority)}
                    onClick={toggleSelector}
                    role="button"/>
             </>
+
             {shouldShowSelector && <div className="priority-selector-overlay">
                 {selectablePriorities.map((priority) => (
                     <div className="priority-selector-line"
-                         onClick={() => props.selectPriority(priority)}
+                         onClick={() => prioritySelected(priority)}
                          role="button"
-                         key={priority}
-                    >
+                         key={priority}>
                         <i className="fa-solid fa-flag selector-icon" style={getColorStyleForPriority(priority)}/>
                         <span className="ml-1">{getTitleForPriority(priority)}</span>
                         {priority == props.currentPriority && <i className="fa-solid fa-check ml-auto"/>}
                     </div>
                 ))}
             </div>}
-            <BackgroundBlocker v-if="shouldShowSelector" onClick={toggleSelector}/>
+            { shouldShowSelector && <BackgroundBlocker onClick={toggleSelector}/>}
         </div>
     )
 }

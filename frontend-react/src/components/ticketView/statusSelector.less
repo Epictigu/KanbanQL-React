@@ -1,0 +1,42 @@
+.status-selector-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .status-selector-main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    border-radius: 4px;
+    padding: 5px 10px;
+    min-width: 150px;
+    background-color: var(--status-selector-background-color);
+    color: var(--status-selector-text-color);
+  }
+
+  .status-selector-overlay {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: calc(100% - 10px);
+    width: 100%;
+    padding: 15px 10px 5px 10px;
+    user-select: none;
+    z-index: 55;
+    background-color: var(--main-background-color);
+    border: 1px solid var(--status-selector-background-color);
+    border-radius: 0 0 4px 4px;
+
+    .status-selector-item {
+      padding: 3px 5px;
+      border-radius: 8px;
+
+      &:hover {
+        background-color: var(--status-selector-background-color);
+        color: var(--status-selector-text-color);
+        cursor: pointer;
+      }
+    }
+  }
+}
