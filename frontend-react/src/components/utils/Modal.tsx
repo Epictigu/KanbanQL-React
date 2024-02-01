@@ -1,4 +1,4 @@
-import './Modal.less'
+import './Modal.less';
 import {ReactNode} from "react";
 
 const defaultProps = {
@@ -9,14 +9,14 @@ const defaultProps = {
     size: "",
     cancelButtonText: "Abbrechen",
     onSave: () => {
+    },
+    onCancel: () => {
     }
 }
 type DefaultProps = Partial<typeof defaultProps>;
 type ModalProps = {
     showModal: boolean;
     title: string;
-
-    onCancel: () => void;
 
     children: ReactNode;
 } & DefaultProps;

@@ -1,10 +1,10 @@
+import './PrioritySelector.less';
 import BackgroundBlocker from "./utils/BackgroundBlocker.tsx";
-import {ReactNode, useState} from "react";
+import {useState} from "react";
 import {Priority} from "../enum/priority.ts";
 
 interface PrioritySelectorProps {
     currentPriority: Priority;
-    children: ReactNode;
     selectPriority: (priority: Priority) => void;
 }
 
