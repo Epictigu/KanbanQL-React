@@ -1,5 +1,6 @@
 import './BackgroundBlocker.less';
 import {CSSProperties} from "react";
+import "./BackgroundBlocker.less"
 
 const defaultProps = {
     backgroundColor: "transparent",
