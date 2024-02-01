@@ -6,7 +6,6 @@ import {Priority} from "../enum/priority.ts";
 interface PrioritySelectorProps {
     currentPriority: Priority;
     selectPriority: (priority: Priority) => void;
-    className: string;
 }
 
 function getColorStyleForPriority(priority: Priority) {
@@ -58,8 +57,7 @@ function PrioritySelector(props: PrioritySelectorProps) {
     }
 
     return (
-        <div className={`priority-selector ${props.className}`}>
-            {props.children ?? ""}
+        <div className="priority-selector">
             <>
                 <i className="fa-solid fa-flag selector-icon"
                    style={getColorStyleForPriority(props.currentPriority)}
