@@ -1,13 +1,17 @@
 import './App.less'
-import "bootstrap/dist/css/bootstrap.css";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Home from "./components/Home.tsx";
 
+
 function App() {
-    return (
-        <div id="app">
-            <Home/>
-        </div>
-    )
+
+    return(
+        <BrowserRouter>
+        <Routes>
+            <Route index element={<Navigate to='/home' />} />
+            <Route path={"home"} element={<Home />} />
+        </Routes>
+    </BrowserRouter>)
 }
 
 export default App;
