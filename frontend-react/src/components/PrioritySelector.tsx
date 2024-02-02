@@ -58,12 +58,10 @@ function PrioritySelector(props: PrioritySelectorProps) {
 
     return (
         <div className="priority-selector">
-            <>
-                <i className="fa-solid fa-flag selector-icon"
-                   style={getColorStyleForPriority(props.currentPriority)}
-                   onClick={toggleSelector}
-                   role="button"/>
-            </>
+            <i className="fa-solid fa-flag selector-icon"
+               style={getColorStyleForPriority(props.currentPriority)}
+               onClick={toggleSelector}
+               role="button"/>
 
             {shouldShowSelector && <div className="priority-selector-overlay">
                 {selectablePriorities.map((priority) => (
