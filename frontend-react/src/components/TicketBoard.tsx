@@ -2,16 +2,21 @@ import './TicketBoard.less';
 import TicketLane from "./TicketLane.tsx";
 import {TicketStatus} from "../enum/ticketStatus.ts";
 import {Ticket} from "../model/ticket.ts";
+import TicketServices from "../services/ticketServices.ts";
+import {useState} from "react";
 
 interface TicketBoardProps {
     selectTicket: (ticket: Ticket) => void;
 }
 
 export function TicketBoard(props: TicketBoardProps) {
-    const tickets: Ticket[] = []
+    const [tickets, setTickets] = useState<Array<Ticket>>([])
+    TicketServices.fetchAllTickets().then(result =>
+        setTickets(result.data.getAllTickets));
 
     const ticketsByStatus = (status: TicketStatus) => {
-        return tickets.filter(ticket => ticket.status === status);
+        console.log();
+        return tickets.filter(ticket => ticket.status.toString() === TicketStatus[status]);
     }
 
     return <div className="ticket-board">

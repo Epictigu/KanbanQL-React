@@ -94,22 +94,22 @@ function TicketCard(props: TicketCardProps) {
             ))}
             <div className="tag-edit">
                 <i className="fa fa-solid fa-tags tag-edit-icon" onClick={toggleTagEditor}/>
-                shouldShowTagList && <div className="tag-selector-overlay">
-                {tags.map((tag: Tag) => (
-                    <div className="tag-selector-line" onClick={() => selectTag(tag)} key={tag.id}>
-                        <TagView tagId="tag.id"/>
-                        isTagSelected(tag) && <i className="fa-solid fa-check ml-auto"/>
-                    </div>
-                ))}
+                {shouldShowTagList && <div className="tag-selector-overlay">
+                    {tags.map((tag: Tag) => (
+                        <div className="tag-selector-line" onClick={() => selectTag(tag)} key={tag.id}>
+                            <TagView tagId="tag.id"/>
+                            isTagSelected(tag) && <i className="fa-solid fa-check ml-auto"/>
+                        </div>
+                    ))}
 
-                <hr className="hr mt-2 mb-2"/>
-                <div className="tag-selector-line" onClick={openAddTagModal}>
-                    <i className="fa-solid fa-plus ml-auto mr-auto"/>
-                </div>
-            </div>
+                    <hr className="hr mt-2 mb-2"/>
+                    <div className="tag-selector-line" onClick={openAddTagModal}>
+                        <i className="fa-solid fa-plus ml-auto mr-auto"/>
+                    </div>
+                </div>}
             </div>
         </div>
-        shouldShowTagList && <BackgroundBlocker onClick={toggleTagEditor} customZIndex={14}/>
+        {shouldShowTagList && <BackgroundBlocker onClick={toggleTagEditor} customZIndex={14}/>}
         <Modal saveButtonText="Hinzufügen" onSave={addTag} title="Neuen Tag erstellen" showModal={showModal}>
             <div className="input-group d-flex flex-column">
                 <label htmlFor="newTagName">Name des Tags:</label>
