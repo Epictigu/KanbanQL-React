@@ -113,7 +113,7 @@ function TicketCard(props: TicketCardProps) {
         <Modal saveButtonText="Hinzufügen" onSave={addTag} title="Neuen Tag erstellen" showModal={showModal}>
             <div className="input-group d-flex flex-column">
                 <label htmlFor="newTagName">Name des Tags:</label>
-                <input id="newTagName" v-model="newTagName" className="form-control w-100" type="text"/>
+                <input id="newTagName" value={newTagName} className="form-control w-100" type="text"/>
             </div>
         </Modal>
     </div>
