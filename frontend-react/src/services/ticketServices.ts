@@ -110,8 +110,8 @@ class TicketService {
     }
 
     public createNewTicketWithName(name: string): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation createTicket($title: String!) {
                     createTicket(
                         ticket: {
