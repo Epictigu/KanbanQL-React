@@ -1,5 +1,5 @@
 import Modal from "../../utils/Modal.tsx";
-import TagView from "../../TagView.tsx";
+import TagView from "../../tagView/tagView.tsx";
 import {Tag} from "../../../model/tag.ts";
 import TagService from "../../../services/tagService.ts";
 

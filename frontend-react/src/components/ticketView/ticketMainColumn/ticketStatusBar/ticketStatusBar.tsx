@@ -1,20 +1,20 @@
 import "./ticketStatusBar.less"
 import React from 'react'
-import StatusSelector from "./statusSelector.tsx";
-import {TicketDetails} from "../../model/ticketDetails.ts";
+import StatusSelector from "./statusSelector/statusSelector.tsx";
+import {TicketDetails} from "../../../../model/ticketDetails.ts";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
-import {Priority} from "../../enum/priority.ts";
-import {TicketStatus} from "../../enum/ticketStatus.ts";
-import PrioritySelector from "../PrioritySelector.tsx";
+import {Priority} from "../../../../enum/priority.ts";
+import {TicketStatus} from "../../../../enum/ticketStatus.ts";
+import PrioritySelector from "../../../prioritySelector/prioritySelector.tsx";
 
 interface TicketStatusBarProps {
-    ticket : TicketDetails;
-    OnTicketViewClosed : () => void;
+    ticket: TicketDetails;
+    OnTicketViewClosed: () => void;
 }
 
 interface TicketStatusBarState {
-    ticket : TicketDetails
+    ticket: TicketDetails
 }
 
 class TicketStatusBar extends React.Component<TicketStatusBarProps, TicketStatusBarState> {

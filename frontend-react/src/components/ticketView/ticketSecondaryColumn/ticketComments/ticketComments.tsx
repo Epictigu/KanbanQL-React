@@ -1,17 +1,17 @@
 import "./ticketComments.less"
 
 import React from 'react'
-import CommentView from "./commentView.tsx";
-import {TicketDetails} from "../../model/ticketDetails.ts";
-import {Comment} from "../../model/comment.ts";
+import CommentView from "./commentView/commentView.tsx";
+import {TicketDetails} from "../../../../model/ticketDetails.ts";
+import {Comment} from "../../../../model/comment.ts";
 
 interface TicketCommentsProps {
-    ticket : TicketDetails,
+    ticket: TicketDetails,
 }
 
 interface TicketCommentsState {
-    ticket : TicketDetails;
-    commentText : string;
+    ticket: TicketDetails;
+    commentText: string;
 }
 
 class TicketComments extends React.Component<TicketCommentsProps, TicketCommentsState> {

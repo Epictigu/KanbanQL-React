@@ -1,6 +1,6 @@
 import "./commentView.less"
 import React from 'react'
-import {Comment} from "../../model/comment.ts";
+import {Comment} from "../../../../../model/comment.ts";
 
 interface CommentViewProps {
     comment : Comment

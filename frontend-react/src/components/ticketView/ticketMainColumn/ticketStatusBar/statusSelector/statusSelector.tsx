@@ -1,10 +1,10 @@
 import "./statusSelector.less"
 import React from 'react'
-import BackgroundBlocker from "../utils/BackgroundBlocker.tsx";
-import {TicketStatus} from "../../enum/ticketStatus.ts";
+import BackgroundBlocker from "../../../../utils/BackgroundBlocker.tsx";
+import {TicketStatus} from "../../../../../enum/ticketStatus.ts";
 
 interface StatusSelectorProps {
-    status : TicketStatus;
+    status: TicketStatus;
     changeStatus: (status: TicketStatus) => void;
     className?: string;
 }

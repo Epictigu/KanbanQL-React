@@ -1,17 +1,17 @@
 import "./ticketMainColumn.less"
 import React from 'react'
-import TicketStatusBar from "./ticketStatusBar.tsx";
-import {TicketDetails} from "../../model/ticketDetails.ts";
+import TicketStatusBar from "./ticketStatusBar/ticketStatusBar.tsx";
+import {TicketDetails} from "../../../model/ticketDetails.ts";
 
 interface TicketMainColumnProps {
-    ticket : TicketDetails;
-    onTicketViewClosed : () => void;
+    ticket: TicketDetails;
+    onTicketViewClosed: () => void;
 }
 
 interface TicketMainColumnState {
     ticket: TicketDetails
-    title : string;
-    description : string
+    title: string;
+    description: string
 }
 
 class TicketMainColumn extends React.Component<TicketMainColumnProps, TicketMainColumnState> {

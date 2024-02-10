@@ -1,4 +1,4 @@
-import './NavigationBar.less';
+import './navigationBar.less';
 import {useState} from "react";
 import CreateTicketModal from "./createTicketModal/createTicketModal.tsx";
 import TagManagementModal from "./tagManagementModal/tagManagementModal.tsx";

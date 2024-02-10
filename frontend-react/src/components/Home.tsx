@@ -1,5 +1,5 @@
-import {TicketBoard} from "./TicketBoard.tsx";
-import NavigationBar from "./navigationBar/NavigationBar.tsx";
+import {TicketBoard} from "./ticketBoard/ticketBoard.tsx";
+import NavigationBar from "./navigationBar/navigationBar.tsx";
 
 function Home() {
     return <>

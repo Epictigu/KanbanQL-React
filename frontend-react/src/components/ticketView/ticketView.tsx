@@ -1,14 +1,14 @@
 import "./ticketView.less"
 import React from 'react'
 import BackgroundBlocker from "../utils/BackgroundBlocker.tsx";
-import TicketViewHeader from "./ticketViewHeader.tsx";
-import TicketMainColumn from "./ticketMainColumn.tsx";
-import TicketSecondaryColumn from "./ticketSecondaryColumn.tsx";
+import TicketViewHeader from "./ticketViewHeader/ticketViewHeader.tsx";
+import TicketMainColumn from "./ticketMainColumn/ticketMainColumn.tsx";
+import TicketSecondaryColumn from "./ticketSecondaryColumn/ticketSecondaryColumn.tsx";
 import {TicketDetails} from "../../model/ticketDetails.ts";
 
 interface TicketViewProps {
-    ticket : TicketDetails
-    onTicketViewClosed : () => void;
+    ticket: TicketDetails
+    onTicketViewClosed: () => void;
 
 }
 

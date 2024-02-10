@@ -1,6 +1,6 @@
 import "./ticketCommentHeader.less"
 import React from 'react'
-import {TicketDetails} from "../../model/ticketDetails.ts";
+import {TicketDetails} from "../../../../model/ticketDetails.ts";
 
 interface TicketCommentHeaderProps {
     ticket : TicketDetails

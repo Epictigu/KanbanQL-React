@@ -1,7 +1,7 @@
 import "./ticketViewHeader.less"
 
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faX} from "@fortawesome/free-solid-svg-icons";
 
 interface TicketViewHeaderProps {

@@ -1,8 +1,8 @@
 import "./ticketSecondaryColumn.less"
 import React from 'react'
-import TicketComments from "./ticketComments.tsx";
-import TicketCommentHeader from "./ticketCommentHeader.tsx";
-import {TicketDetails} from "../../model/ticketDetails.ts";
+import TicketComments from "./ticketComments/ticketComments.tsx";
+import TicketCommentHeader from "./ticketCommentHeader/ticketCommentHeader.tsx";
+import {TicketDetails} from "../../../model/ticketDetails.ts";
 
 interface TicketSecondaryColumnProps {
     ticket: TicketDetails;
