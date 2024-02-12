@@ -15,11 +15,13 @@ interface TicketStatusBarProps {
 
 function TicketStatusBar(props: TicketStatusBarProps) {
     const selectPriority = (priority: Priority) => {
-        TicketServices.updatePriority(props.ticket.id, priority, props.ticket);
+        console.log(priority);
+        //TicketServices.updatePriority(props.ticket.id, priority, props.ticket);
     }
 
     const selectStatus = (status: TicketStatus) => {
-        TicketServices.updateStatus(props.ticket.id, status, props.ticket);
+        console.log(status);
+        //TicketServices.updateStatus(props.ticket.id, status, props.ticket);
     }
 
     const deleteTicket = () => {

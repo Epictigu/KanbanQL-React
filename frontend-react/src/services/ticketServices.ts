@@ -2,7 +2,14 @@ import type {Ticket} from "../model/ticket";
 import {Priority} from "../enum/priority";
 import type {TicketDetails} from "../model/ticketDetails";
 import {TicketStatus} from "../enum/ticketStatus";
-import {ApolloClient, ApolloQueryResult, gql, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
+import {
+    ApolloClient,
+    ApolloQueryResult,
+    FetchResult,
+    gql,
+    InMemoryCache,
+    NormalizedCacheObject
+} from "@apollo/client";
 
 const API_URL = 'http://localhost:8080/graphql';
 
@@ -10,7 +17,8 @@ class TicketService {
 
     client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
         uri: API_URL,
-        cache: new InMemoryCache()
+        cache: new InMemoryCache(),
+        connectToDevTools: true
     });
 
     public async fetchAllTickets(): Promise<ApolloQueryResult<any>> {
@@ -109,8 +117,8 @@ class TicketService {
         return Priority[priority as unknown as keyof typeof Priority];
     }
 
-    public createNewTicketWithName(name: string): void {
-        this.client.mutate({
+    public createNewTicketWithName(name: string) : Promise<FetchResult<any>>{
+        return this.client.mutate({
             mutation: gql`
                 mutation createTicket($title: String!) {
                     createTicket(
@@ -119,19 +127,24 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        title,
+                        status,
+                        priority,
+                        tags {
+                            id
+                        }
                     }
                 }`,
             variables: {
                 title: name
             }
-        }).then(() => console.log(),
-            (error) => console.log(error));
+        })
     }
 
-    public deleteTicket(id: string): void {
-        this.client.query({
-            query: gql`
+    public deleteTicket(id: string) : Promise<FetchResult<any>> {
+        return this.client.mutate({
+            mutation: gql`
                 mutation deleteTicket($id: String!) {
                     deleteTicket(id: $id) {
                         id
@@ -140,18 +153,18 @@ class TicketService {
             variables: {
                 id
             }
-        }).then(() => console.log(),
-            (error) => console.log(error));
+        });
     }
 
-    public updatePriority(id: string, priority: Priority, ticketDetails?: TicketDetails): void {
-        this.client.query({
-            query: gql`
-                mutation updateTicket($id: String!, $priority: Priority!) {
+    public updatePriority(id: string, priority: Priority, callback: Function): void {
+        const priorityString: string = Priority[priority];
+        this.client.mutate({
+            mutation: gql`
+                mutation updateTicket($id: String!) {
                     updateTicket(
                         ticket: {
                             id: $id,
-                            priority: $priority
+                            priority: ${priorityString}
                         }
                     )
                     {
@@ -163,21 +176,20 @@ class TicketService {
                 id
             }
         }).then(() => {
-                if (ticketDetails) {
-                    ticketDetails.priority = priority;
-                }
-            },
-            (error) => console.log(error));
-    }
+            callback();
+        },
+        (error) => console.log(error));
+}
 
-    public updateStatus(id: string, status: TicketStatus, ticketDetails?: TicketDetails): void {
-        this.client.query({
-            query: gql`
-                mutation updateTicket($id: String!, $status: Status!) {
+    public updateStatus(id: string, status: TicketStatus, callback: Function): void {
+        const statusString: string = TicketStatus[status];
+        this.client.mutate({
+            mutation: gql`
+                mutation updateTicket($id: String!) {
                     updateTicket(
                         ticket: {
                             id: $id,
-                            status: $status
+                            status: ${statusString}
                         }
                     )
                     {
@@ -189,16 +201,14 @@ class TicketService {
                 status
             }
         }).then(() => {
-                if (ticketDetails) {
-                    ticketDetails.status = status;
-                }
-            },
-            (error) => console.log(error));
+            callback();
+        },
+        (error) => console.log(error));
     }
 
     public updateTags(ticket: Ticket): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation updateTicket($id: String!, $tags: [UpdateTagRequest]) {
                     updateTicket(
                         ticket: {
@@ -220,8 +230,8 @@ class TicketService {
     }
 
     public updateTitle(id: string, title: string, ticketDetails?: TicketDetails): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation updateTicket($id: String!, $title: String!) {
                     updateTicket(
                         ticket: {
@@ -246,8 +256,8 @@ class TicketService {
     }
 
     public updateDescription(id: string, description: string, ticketDetails?: TicketDetails): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation updateTicket($id: String!, $description: String!) {
                     updateTicket(
                         ticket: {
@@ -272,8 +282,8 @@ class TicketService {
     }
 
     public createComment(ticket: TicketDetails, comment: string): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation createComment($id: String!, $comment: String!) {
                     createComment(
                         comment: {
