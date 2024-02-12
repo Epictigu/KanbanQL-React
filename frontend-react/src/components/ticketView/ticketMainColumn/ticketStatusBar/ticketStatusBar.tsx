@@ -15,10 +15,12 @@ interface TicketStatusBarProps {
 
 function TicketStatusBar(props: TicketStatusBarProps) {
     const selectPriority = (priority: Priority) => {
+        console.log(priority);
         //TicketServices.updatePriority(props.ticket.id, priority, props.ticket);
     }
 
     const selectStatus = (status: TicketStatus) => {
+        console.log(status);
         //TicketServices.updateStatus(props.ticket.id, status, props.ticket);
     }
 

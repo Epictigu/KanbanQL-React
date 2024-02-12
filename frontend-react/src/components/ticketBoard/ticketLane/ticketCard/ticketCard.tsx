@@ -16,6 +16,7 @@ function TicketCard(props: TicketCardProps) {
     let doubleClickTimeout: number | null = null;
 
     const selectPriority = (priority: Priority) => {
+        console.log(priority);
         //TicketServices.updatePriority(props.ticket.id, priority);
     };
 
