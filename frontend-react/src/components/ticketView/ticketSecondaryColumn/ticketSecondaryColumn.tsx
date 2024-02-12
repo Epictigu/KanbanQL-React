@@ -1,5 +1,4 @@
-import "./ticketSecondaryColumn.less"
-import React from 'react'
+import "./ticketSecondaryColumn.less";
 import TicketComments from "./ticketComments/ticketComments.tsx";
 import TicketCommentHeader from "./ticketCommentHeader/ticketCommentHeader.tsx";
 import {TicketDetails} from "../../../model/ticketDetails.ts";
@@ -8,25 +7,11 @@ interface TicketSecondaryColumnProps {
     ticket: TicketDetails;
 }
 
-interface TicketSecondaryColumnState {
-}
-
-class TicketSecondaryColumn extends React.Component<TicketSecondaryColumnProps, TicketSecondaryColumnState> {
-
-    constructor(props : TicketSecondaryColumnProps) {
-        super(props)
-        this.state = {
-
-        }
-    }
-
-    render() {
-        return <div className="secondary-column-container">
-            <TicketCommentHeader ticket={this.props.ticket}/>
-            <TicketComments ticket={this.props.ticket} />
-        </div>;
-    }
-
+function TicketSecondaryColumn(props: TicketSecondaryColumnProps) {
+    return <div className="secondary-column-container">
+        <TicketCommentHeader ticket={props.ticket}/>
+        <TicketComments ticket={props.ticket}/>
+    </div>;
 }
 
 export default TicketSecondaryColumn;

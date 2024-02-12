@@ -1,5 +1,4 @@
-import "./ticketStatusBar.less"
-import React from 'react'
+import "./ticketStatusBar.less";
 import StatusSelector from "./statusSelector/statusSelector.tsx";
 import {TicketDetails} from "../../../../model/ticketDetails.ts";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -7,56 +6,37 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {Priority} from "../../../../enum/priority.ts";
 import {TicketStatus} from "../../../../enum/ticketStatus.ts";
 import PrioritySelector from "../../../prioritySelector/prioritySelector.tsx";
+import TicketServices from "../../../../services/ticketServices.ts";
 
 interface TicketStatusBarProps {
     ticket: TicketDetails;
     OnTicketViewClosed: () => void;
 }
 
-interface TicketStatusBarState {
-    ticket: TicketDetails
-}
-
-class TicketStatusBar extends React.Component<TicketStatusBarProps, TicketStatusBarState> {
-    constructor(props : TicketStatusBarProps) {
-        super(props)
-        this.state = {
-            ticket : this.props.ticket
-        }
+function TicketStatusBar(props: TicketStatusBarProps) {
+    const selectPriority = (priority: Priority) => {
+        TicketServices.updatePriority(props.ticket.id, priority, props.ticket);
     }
 
-    selectPriority(priority: Priority) {
-        this.setState((prevState) => {
-            prevState.ticket.priority = priority;
-            return ({ticket: prevState.ticket});
-        })
-        //TicketService.updatePriority(this.props.ticket.id, priority, this.props.ticket);
-    }
-    selectStatus(status: TicketStatus) {
-        this.setState((prevState) => {
-            prevState.ticket.status = status;
-            return ({ticket: prevState.ticket});
-        })
-        //TicketService.updateStatus(this.props.ticket.id, status, this.props.ticket);
-    }
-    deleteTicket() {
-        this.props.OnTicketViewClosed()
-        //TicketService.deleteTicket(this.props.ticket.id);
-    }
-    render() {
-        return this.state.ticket && <div className="ticket-status-bar">
-            <StatusSelector status={this.state.ticket.status} className="mr-3" changeStatus={(status) => this.selectStatus(status)}/>
-            <hr style={{rotate: "90deg", width: "1.5em", margin: 0}}/>
-            <div className="ml-3">
-                <PrioritySelector currentPriority={this.state.ticket.priority} selectPriority={(priority) => this.selectPriority(priority)}/>
-            </div>
-            <FontAwesomeIcon icon={faTrash} className="fa-solid fa-trash" onClick={() => {
-                this.deleteTicket();
-            }}/>
-
-        </div>;
+    const selectStatus = (status: TicketStatus) => {
+        TicketServices.updateStatus(props.ticket.id, status, props.ticket);
     }
 
+    const deleteTicket = () => {
+        props.OnTicketViewClosed();
+        TicketServices.deleteTicket(props.ticket.id);
+    }
+
+    return props.ticket && <div className="ticket-status-bar">
+        <StatusSelector status={props.ticket.status} className="mr-3" changeStatus={selectStatus}/>
+
+        <hr style={{rotate: "90deg", width: "1.5em", margin: 0}}/>
+        <div className="ml-3">
+            <PrioritySelector currentPriority={props.ticket.priority} selectPriority={selectPriority}/>
+        </div>
+
+        <FontAwesomeIcon icon={faTrash} className="fa-solid fa-trash" onClick={deleteTicket}/>
+    </div>;
 }
 
 export default TicketStatusBar;

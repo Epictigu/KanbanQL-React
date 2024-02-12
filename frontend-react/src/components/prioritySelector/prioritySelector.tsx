@@ -3,6 +3,13 @@ import BackgroundBlocker from "../utils/BackgroundBlocker.tsx";
 import {useState} from "react";
 import {fetchPriorityData, Priority} from "../../enum/priority.ts";
 
+const selectablePriorities: Priority[] = [
+    Priority.CRITICAL,
+    Priority.HIGH,
+    Priority.MEDIUM,
+    Priority.LOW,
+];
+
 interface PrioritySelectorProps {
     currentPriority: Priority;
     selectPriority: (priority: Priority) => void;
@@ -10,12 +17,6 @@ interface PrioritySelectorProps {
 
 function PrioritySelector(props: PrioritySelectorProps) {
     const [shouldShowSelector, setShouldShowSelector] = useState(false);
-    const selectablePriorities: Priority[] = [
-        Priority.CRITICAL,
-        Priority.HIGH,
-        Priority.MEDIUM,
-        Priority.LOW,
-    ];
 
     const toggleSelector = (): void => {
         setShouldShowSelector(!shouldShowSelector);

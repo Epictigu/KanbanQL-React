@@ -1,70 +1,53 @@
-import "./ticketMainColumn.less"
-import React from 'react'
+import "./ticketMainColumn.less";
 import TicketStatusBar from "./ticketStatusBar/ticketStatusBar.tsx";
 import {TicketDetails} from "../../../model/ticketDetails.ts";
+import TicketServices from "../../../services/ticketServices.ts";
 
 interface TicketMainColumnProps {
     ticket: TicketDetails;
     onTicketViewClosed: () => void;
 }
 
-interface TicketMainColumnState {
-    ticket: TicketDetails
-    title: string;
-    description: string
-}
+function TicketMainColumn(props: TicketMainColumnProps) {
+    let title = props.ticket.title;
+    let description = props.ticket.description;
 
-class TicketMainColumn extends React.Component<TicketMainColumnProps, TicketMainColumnState> {
-    constructor(props : TicketMainColumnProps) {
-        super(props)
-        this.state = {
-            ticket : props.ticket,
-            title : props.ticket.title,
-            description : props.ticket.description
-        }
-    }
-
-    saveNewTitle(newTitle : string) {
-        if (newTitle === "") {
-            this.setState((prevState) => ({title: prevState.title}));
+    const saveNewTitle = () => {
+        if (title === "") {
+            title = props.ticket.title;
             return;
         }
-        let newTicket = this.state.ticket;
+        TicketServices.updateTitle(props.ticket.id, title, props.ticket);
+    };
 
-        newTicket.title = newTitle;
-
-        this.setState({title: newTitle});
-        this.setState(() => ({ticket: newTicket}));
-
-
-        //TicketService.updateTitle(this.ticket.id, this.newTitle, this.ticket);
-    }
-    saveNewDescription(newDescription : string) {
-        if (newDescription === "") {
-            this.setState((prevState) => ({description: prevState.description}));
+    const saveNewDescription = () => {
+        if (description === "") {
+            description = props.ticket.description;
             return;
         }
-        let newTicket = this.state.ticket;
-
-        newTicket.description = newDescription;
-
-        this.setState({description: newDescription});
-        this.setState(() => ({ticket: newTicket}));
-        //TicketService.updateDescription(this.ticket.id, this.newDescription, this.ticket);
+        TicketServices.updateDescription(props.ticket.id, description, props.ticket);
     }
 
-    render() {
-        return <div className="main-column-container">
-            <TicketStatusBar ticket={this.props.ticket} OnTicketViewClosed={this.props.onTicketViewClosed} />
-            <div className="main-column">
-                <input type="text" id="name-field" value={this.state.title} onChange={(input) => {this.setState({title: input.target.value}) }}
-                       className="ticket-name-input"  onBlur={(event) => this.saveNewTitle(event.target.value)}/>
-                <textarea  id="name-field" value={this.state.description} className="ticket-description-input" onChange={(input) => {this.setState({description: input.target.value}) }}
-                          placeholder="Geben Sie hier eine Beschreibung ein..." onBlur={(event) => this.saveNewDescription(event.target.value)}/>
-            </div>
-        </div>;
-    }
+    return <div className="main-column-container">
+        <TicketStatusBar ticket={props.ticket} OnTicketViewClosed={props.onTicketViewClosed}/>
 
+        <div className="main-column">
+            <input type="text"
+                   id="name-field"
+                   value={title}
+                   onChange={(input) => title = input.target.value}
+                   className="ticket-name-input"
+                   onBlur={saveNewTitle}
+            />
+            <textarea id="name-field"
+                      value={description}
+                      className="ticket-description-input"
+                      onChange={(input) => description = input.target.value}
+                      placeholder="Geben Sie hier eine Beschreibung ein..."
+                      onBlur={saveNewDescription}
+            />
+        </div>
+    </div>;
 }
 
 export default TicketMainColumn;

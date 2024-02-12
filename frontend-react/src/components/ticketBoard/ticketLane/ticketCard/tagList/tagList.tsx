@@ -1,3 +1,4 @@
+import './tagList.less';
 import {TagId} from "../../../../../model/tagId.ts";
 import TagView from "../../../../tagView/tagView.tsx";
 import {Tag} from "../../../../../model/tag.ts";
