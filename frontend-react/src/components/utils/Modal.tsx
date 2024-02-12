@@ -22,7 +22,6 @@ type ModalProps = {
 } & DefaultProps;
 
 function Modal(props: ModalProps) {
-    console.log(props.saveButtonText);
     return props.showModal && (
         <div className="modal-container">
             <span className="modal-background" onClick={props.onCancel}/>
