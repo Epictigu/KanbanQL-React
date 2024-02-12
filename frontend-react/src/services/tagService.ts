@@ -22,8 +22,8 @@ class TagService {
     }
 
     createNewTag(title: string): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation createTag($title: String!) {
                     createTag (tag: {tagName: $title}) {
                         id
@@ -37,8 +37,8 @@ class TagService {
     }
 
     deleteTag(id: string): void {
-        this.client.query({
-            query: gql`
+        this.client.mutate({
+            mutation: gql`
                 mutation deleteTag($id: String!) {
                     deleteTag (id: $id) {
                         id
