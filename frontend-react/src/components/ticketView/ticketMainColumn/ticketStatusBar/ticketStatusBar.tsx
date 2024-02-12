@@ -28,7 +28,9 @@ function TicketStatusBar(props: TicketStatusBarProps) {
     }
 
     return props.ticket && <div className="ticket-status-bar">
-        <StatusSelector status={props.ticket.status} className="mr-3" changeStatus={selectStatus}/>
+        <div className="mr-3">
+            <StatusSelector status={props.ticket.status} changeStatus={selectStatus}/>
+        </div>
 
         <hr style={{rotate: "90deg", width: "1.5em", margin: 0}}/>
         <div className="ml-3">
