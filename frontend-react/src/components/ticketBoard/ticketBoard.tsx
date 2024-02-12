@@ -1,8 +1,8 @@
-import './TicketBoard.less';
-import TicketLane from "./TicketLane.tsx";
-import {TicketStatus} from "../enum/ticketStatus.ts";
-import {Ticket} from "../model/ticket.ts";
-import TicketServices from "../services/ticketServices.ts";
+import './ticketBoard.less';
+import TicketLane from "./ticketLane/ticketLane.tsx";
+import {TicketStatus} from "../../enum/ticketStatus.ts";
+import {Ticket} from "../../model/ticket.ts";
+import TicketServices from "../../services/ticketServices.ts";
 import {useState} from "react";
 
 interface TicketBoardProps {
@@ -15,7 +15,6 @@ export function TicketBoard(props: TicketBoardProps) {
         setTickets(result.data.getAllTickets));
 
     const ticketsByStatus = (status: TicketStatus) => {
-        console.log();
         return tickets.filter(ticket => ticket.status.toString() === TicketStatus[status]);
     }
 

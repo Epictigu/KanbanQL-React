@@ -1,0 +1,21 @@
+.ticket-card {
+  position: relative;
+  flex-direction: column;
+  display: flex;
+  border: 1px solid var(--navigation-border-color);
+  border-radius: 4px;
+  width: 300px;
+  margin: 10px 0;
+  padding: 10px;
+  cursor: pointer;
+  box-shadow: var(--card-box-shadow-color) 1px 1px 2px;
+  user-select: none;
+
+  .double-click-checker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+}

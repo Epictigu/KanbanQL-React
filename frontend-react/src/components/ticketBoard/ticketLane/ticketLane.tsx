@@ -1,7 +1,7 @@
-import './TicketLane.less';
-import TicketCard from "./TicketCard.tsx";
-import {Ticket} from "../model/ticket.ts";
-import {TicketStatus} from "../enum/ticketStatus.ts";
+import './ticketLane.less';
+import TicketCard from "./ticketCard/ticketCard.tsx";
+import {Ticket} from "../../../model/ticket.ts";
+import {TicketStatus} from "../../../enum/ticketStatus.ts";
 import React from "react";
 
 interface TicketLaneProps {
@@ -41,7 +41,7 @@ function TicketLane(props: TicketLaneProps) {
         <span className="lane-title" style={colorStyle}>{props.laneName}</span>
         {props.tickets.map((ticket: Ticket) => (
             <TicketCard
-                v-for="ticket in tickets"
+                key={ticket.id}
                 ticket={ticket}
                 selectTicket={props.selectTicket}
             />
