@@ -33,7 +33,7 @@ function StatusSelector(props: StatusSelectorProps) {
         {selectorOpened && <>
             <div className="status-selector-overlay">
                 {selectableStatus.map((status: TicketStatus) => props.status != status &&
-                    <span className="status-selector-item" key={status} onClick={() => setNewStatus(status)}>{fetchTicketStatusLabel(status)}</span>
+                    <span className="status-selector-item" key={status} role={"button"} onClick={() => setNewStatus(status)}>{fetchTicketStatusLabel(status)}</span>
                 )}
             </div>
             <BackgroundBlocker onClick={() => setSelectorOpened(false)}/>

@@ -2,10 +2,12 @@ import './ticketCard.less';
 import {Ticket} from "../../../../model/ticket.ts";
 import PrioritySelector from "../../../prioritySelector/prioritySelector.tsx";
 import {Priority} from "../../../../enum/priority.ts";
-import TicketServices from "../../../../services/ticketServices.ts";
 import {Tag} from "../../../../model/tag.ts";
 import {TagId} from "../../../../model/tagId.ts";
 import TagList from "./tagList/tagList.tsx";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../../state/store.ts";
+import {updatePriorityAsync, updateTagsAsync} from "../../../../state/ticketsSlice.ts";
 
 interface TicketCardProps {
     ticket: Ticket;
@@ -14,20 +16,24 @@ interface TicketCardProps {
 
 function TicketCard(props: TicketCardProps) {
     let doubleClickTimeout: number | null = null;
+    const dispatch = useDispatch<AppDispatch>();
 
     const selectPriority = (priority: Priority) => {
-        console.log(priority);
-        //TicketServices.updatePriority(props.ticket.id, priority);
+        dispatch(updatePriorityAsync({id: props.ticket.id, priority: priority}))
     };
 
     const selectTag = (tag: Tag) => {
-        let index = props.ticket.tags.findIndex((tagId) => tag.id == tagId.id);
+
+        const ticketWithNewTags = JSON.parse(JSON.stringify(props.ticket)) as Ticket;
+        let index = ticketWithNewTags.tags.findIndex((tagId) => tag.id == tagId.id);
         if (index >= 0) {
-            props.ticket.tags.splice(index, 1);
+            ticketWithNewTags.tags.splice(index, 1);
         } else {
-            props.ticket.tags.push({id: tag.id} as TagId);
+            const tagId: TagId = {id: tag.id}
+            ticketWithNewTags.tags.push(tagId);
         }
-        TicketServices.updateTags(props.ticket);
+
+        dispatch(updateTagsAsync(ticketWithNewTags));
     };
 
     const startDrag = (event: any, ticket: any) => {
@@ -56,8 +62,9 @@ function TicketCard(props: TicketCardProps) {
     return props.ticket &&
         <div className="ticket-card" key={props.ticket.id}
              draggable="true"
+             role={"button"}
              onDragStart={(event) => startDrag(event, props.ticket)}>
-            <span className="double-click-checker" onClick={selectTicket}/>
+            <span className="double-click-checker" role={"button"} onClick={selectTicket}/>
 
             <span className="ticket-name">{props.ticket.title}</span>
             <PrioritySelector currentPriority={props.ticket.priority} selectPriority={selectPriority}/>

@@ -1,18 +1,22 @@
 import {useState} from "react";
 import Modal from "../../utils/Modal.tsx";
-import TicketServices from "../../../services/ticketServices.ts";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../state/store.ts";
+import {addTicketAsync} from "../../../state/ticketsSlice.ts";
 
 interface CreateTicketModalProps {
     showModal: boolean,
     closeModal: () => void,
 }
 
-function CreateTicketModal(props: CreateTicketModalProps) {
+function CreateTicketModal(props: Readonly<CreateTicketModalProps>) {
+    const dispatch = useDispatch<AppDispatch>()
+
     const [newTicketName, setNewTicketName] = useState("");
 
     const createTicket = () => {
         props.closeModal();
-        TicketServices.createNewTicketWithName(newTicketName);
+        dispatch(addTicketAsync(newTicketName))
     }
 
     return <>
@@ -30,7 +34,7 @@ function CreateTicketModal(props: CreateTicketModalProps) {
                        onChange={(event) => setNewTicketName(event.target.value)}
                        className="form-control w-100"
                        type="text"
-                />
+                       autoComplete={"off"}/>
             </div>
         </Modal>
     </>
