@@ -25,7 +25,7 @@ const ticketsSlice = createSlice({
         moveTicketToTheTop: (state, action: PayloadAction<Ticket>) =>{
             let index = state.tickets.findIndex((ticket) => ticket.id === action.payload.id);
             state.tickets.splice(index,1);
-            state.tickets.push(action.payload);
+            state.tickets.unshift(action.payload);
         }
     },
     extraReducers: (builder) => {
