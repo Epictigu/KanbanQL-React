@@ -2,14 +2,7 @@ import type {Ticket} from "../model/ticket";
 import {Priority} from "../enum/priority";
 import type {TicketDetails} from "../model/ticketDetails";
 import {TicketStatus} from "../enum/ticketStatus";
-import {
-    ApolloClient,
-    ApolloQueryResult,
-    FetchResult,
-    gql,
-    InMemoryCache,
-    NormalizedCacheObject,
-} from "@apollo/client";
+import {ApolloClient, ApolloQueryResult, FetchResult, gql, InMemoryCache, NormalizedCacheObject,} from "@apollo/client";
 
 const API_URL = 'http://localhost:8080/graphql';
 
@@ -63,7 +56,8 @@ class TicketService {
                 }`,
             variables: {
                 id
-            }
+            },
+            fetchPolicy: 'network-only'
         });
     }
 
