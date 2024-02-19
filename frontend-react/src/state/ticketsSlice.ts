@@ -4,6 +4,7 @@ import {Ticket} from "../model/ticket.ts";
 import {TicketDetails} from "../model/ticketDetails.ts";
 import {Priority} from "../enum/priority.ts";
 import {TicketStatus} from "../enum/ticketStatus.ts";
+import {Comment} from "../model/comment.ts";
 
 interface TicketsState{
     tickets: Ticket[],
@@ -121,6 +122,14 @@ const ticketsSlice = createSlice({
 
                 }
             })
+            .addCase(createCommentAsync.fulfilled, (state, action:PayloadAction<Comment|null>) => {
+                if(action.payload !== null){
+                    if(state.selectedTicket !== null){
+                        state.selectedTicket.comments.push(action.payload);
+                    }
+
+                }
+            })
 
     }
 });
@@ -150,11 +159,6 @@ export const addTicketAsync = createAsyncThunk(
 
 )
 
-export const updateTicketAsync = createAsyncThunk(
-    "tickets/updateTicketAsync",
-    async () => {}
-
-)
 export const deleteTicketAsync = createAsyncThunk(
     "tickets/deleteTicketAsync",
     async (id: string) =>
@@ -239,6 +243,17 @@ export const updateTagsAsync = createAsyncThunk(
         })
 )
 
+export const createCommentAsync = createAsyncThunk(
+    "tickets/createCommentAsync",
+    async (payload: { ticket: TicketDetails, commentText: string }) =>
+        await TicketServices.createComment(payload.ticket, payload.commentText).then((value) => {
+            const comment: Comment = value.data.createComment;
+            return comment;
+        }, (error) => {
+            console.error(error);
+            return null;
+        })
+)
 
 export const {moveTicketToTheTop, deselectTicket} = ticketsSlice.actions;
 export default ticketsSlice.reducer;

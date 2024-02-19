@@ -272,8 +272,8 @@ class TicketService {
         })
     }
 
-    public createComment(ticket: TicketDetails, comment: string): void {
-        this.client.mutate({
+    public createComment(ticket: TicketDetails, comment: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation createComment($id: String!, $comment: String!) {
                     createComment(
@@ -283,17 +283,16 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        commentText,
+                        creationDate
                     }
                 }`,
             variables: {
                 id: ticket.id,
                 comment
             }
-        }).then(() => {
-                this.fetchUpdatedCommentList(ticket);
-            },
-            (error) => console.log(error));
+        });
     }
 }
 

@@ -1,19 +1,25 @@
 import "./ticketComments.less";
-import React from 'react';
+import React, {useState} from 'react';
 import CommentView from "./commentView/commentView.tsx";
 import {TicketDetails} from "../../../../model/ticketDetails.ts";
 import {Comment} from "../../../../model/comment.ts";
-import TicketServices from "../../../../services/ticketServices.ts";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../../state/store.ts";
+import {createCommentAsync} from "../../../../state/ticketsSlice.ts";
 
 interface TicketCommentsProps {
     ticket: TicketDetails,
 }
 
 function TicketComments(props: TicketCommentsProps) {
-    let newCommentText = "";
+
+    const [newCommentText, setNewCommentText] = useState("");
+    const dispatch = useDispatch<AppDispatch>();
+
 
     const addComment = () => {
-        TicketServices.createComment(props.ticket, newCommentText);
+        dispatch(createCommentAsync({ticket: props.ticket, commentText: newCommentText}))
+        setNewCommentText("");
     }
 
     const addCommentWithEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -43,7 +49,7 @@ function TicketComments(props: TicketCommentsProps) {
                        placeholder="Neuer Kommentar ..."
                        onKeyUp={addCommentWithEnter}
                        value={newCommentText}
-                       onChange={(input) => newCommentText = input.target.value}
+                       onChange={(input) => setNewCommentText(input.target.value)}
                 />
                 <button className="fa-solid fa-paper-plane add-comment-icon" onClick={addComment}/>
             </div>
