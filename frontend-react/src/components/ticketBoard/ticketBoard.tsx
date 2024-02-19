@@ -2,20 +2,22 @@ import './ticketBoard.less';
 import TicketLane from "./ticketLane/ticketLane.tsx";
 import {TicketStatus} from "../../enum/ticketStatus.ts";
 import {Ticket} from "../../model/ticket.ts";
-import TicketServices from "../../services/ticketServices.ts";
-import {useState} from "react";
+import {useEffect} from "react";
+import {initializeTicketsAsync} from "../../state/ticketsSlice.ts";
+import {AppDispatch, RootState} from "../../state/store.ts";
+import {useDispatch, useSelector} from "react-redux";
 
 interface TicketBoardProps {
     selectTicket: (ticket: Ticket) => void;
 }
 
-export function TicketBoard(props: TicketBoardProps) {
-    const [tickets, setTickets] = useState<Array<Ticket>>([])
-    TicketServices.fetchAllTickets().then(result =>
-        setTickets(result.data.getAllTickets));
+export function TicketBoard(props: Readonly<TicketBoardProps>) {
+    const tickets: Ticket[] = useSelector((state: RootState) => state.tickets.tickets);
+    const dispatch = useDispatch<AppDispatch>()
 
+    useEffect(() => {dispatch(initializeTicketsAsync())},[1]);
     const ticketsByStatus = (status: TicketStatus) => {
-        return tickets.filter(ticket => ticket.status.toString() === TicketStatus[status]);
+        return tickets.filter(ticket => ticket.status === status);
     }
 
     return <div className="ticket-board">

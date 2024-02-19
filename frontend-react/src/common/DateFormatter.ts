@@ -9,5 +9,19 @@ const dateTimeFormatOptions: Intl.DateTimeFormatOptions = {
 };
 
 export function formatDate(date: Date) {
-    return date.toLocaleDateString("de-DE", dateTimeFormatOptions);
+
+    return formatDateForLocale(date.toString()).toLocaleDateString("de-DE", dateTimeFormatOptions);
+}
+
+function formatDateForLocale(dateString: string): Date {
+    let dateTimeSplit = dateString.split("T");
+    let dateParts = dateTimeSplit[0].split("-");
+    let timeParts = dateTimeSplit[1].split(".")[0].split(":");
+
+    return new Date(Number.parseInt(dateParts[0]),
+        Number.parseInt(dateParts[1]),
+        Number.parseInt(dateParts[2]),
+        Number.parseInt(timeParts[0]),
+        Number.parseInt(timeParts[1]),
+        Number.parseInt(timeParts[2]));
 }

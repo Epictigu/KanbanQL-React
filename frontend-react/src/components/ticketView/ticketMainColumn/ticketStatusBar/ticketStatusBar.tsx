@@ -6,7 +6,9 @@ import {faTrash} from "@fortawesome/free-solid-svg-icons/faTrash";
 import {Priority} from "../../../../enum/priority.ts";
 import {TicketStatus} from "../../../../enum/ticketStatus.ts";
 import PrioritySelector from "../../../prioritySelector/prioritySelector.tsx";
-import TicketServices from "../../../../services/ticketServices.ts";
+import {AppDispatch} from "../../../../state/store.ts";
+import {useDispatch} from "react-redux";
+import {deleteTicketAsync, updatePriorityAsync, updateStatusAsync} from "../../../../state/ticketsSlice.ts";
 
 interface TicketStatusBarProps {
     ticket: TicketDetails;
@@ -14,32 +16,33 @@ interface TicketStatusBarProps {
 }
 
 function TicketStatusBar(props: TicketStatusBarProps) {
+    const dispatch = useDispatch<AppDispatch>();
     const selectPriority = (priority: Priority) => {
-        console.log(priority);
-        //TicketServices.updatePriority(props.ticket.id, priority, props.ticket);
+        dispatch(updatePriorityAsync({id: props.ticket.id, priority: priority}))
     }
 
     const selectStatus = (status: TicketStatus) => {
-        console.log(status);
-        //TicketServices.updateStatus(props.ticket.id, status, props.ticket);
+        dispatch(updateStatusAsync({id: props.ticket.id, status: status}))
     }
 
     const deleteTicket = () => {
         props.OnTicketViewClosed();
-        TicketServices.deleteTicket(props.ticket.id);
+        dispatch(deleteTicketAsync(props.ticket.id))
     }
 
     return props.ticket && <div className="ticket-status-bar">
         <div className="mr-3">
-            <StatusSelector status={props.ticket.status} changeStatus={selectStatus}/>
+            <StatusSelector status={props.ticket.status} changeStatus={(status) => selectStatus(status)}/>
         </div>
 
         <hr style={{rotate: "90deg", width: "1.5em", margin: 0}}/>
         <div className="ml-3">
-            <PrioritySelector currentPriority={props.ticket.priority} selectPriority={selectPriority}/>
+            <PrioritySelector currentPriority={props.ticket.priority} selectPriority={(priority) => selectPriority(priority)}/>
+        </div>
+        <div className="delete-button">
+            <FontAwesomeIcon icon={faTrash} className="fa-solid fa-trash" onClick={() => deleteTicket()}/>
         </div>
 
-        <FontAwesomeIcon icon={faTrash} className="fa-solid fa-trash" onClick={deleteTicket}/>
     </div>;
 }
 

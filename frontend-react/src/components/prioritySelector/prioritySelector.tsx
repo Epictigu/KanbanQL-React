@@ -15,7 +15,7 @@ interface PrioritySelectorProps {
     selectPriority: (priority: Priority) => void;
 }
 
-function PrioritySelector(props: PrioritySelectorProps) {
+function PrioritySelector(props: Readonly<PrioritySelectorProps>) {
     const [shouldShowSelector, setShouldShowSelector] = useState(false);
 
     const toggleSelector = (): void => {

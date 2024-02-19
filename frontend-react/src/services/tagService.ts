@@ -1,4 +1,4 @@
-import {ApolloClient, ApolloQueryResult, gql, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
+import {ApolloClient, ApolloQueryResult, FetchResult, gql, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
 
 const API_URL = 'http://localhost:8080/graphql';
 
@@ -21,23 +21,23 @@ class TagService {
         });
     }
 
-    createNewTag(title: string): void {
-        this.client.mutate({
+    createNewTag(title: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation createTag($title: String!) {
                     createTag (tag: {tagName: $title}) {
-                        id
+                        id,
+                        tagName
                     }
                 }`,
             variables: {
                 title
             }
-        }).then((response) => console.log(response),
-            (error) => console.log(error));
+        })
     }
 
-    deleteTag(id: string): void {
-        this.client.mutate({
+    deleteTag(id: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation deleteTag($id: String!) {
                     deleteTag (id: $id) {
@@ -47,8 +47,7 @@ class TagService {
             variables: {
                 id
             }
-        }).then((response) => console.log(response),
-            (error) => console.log(error));
+        });
     }
 }
 

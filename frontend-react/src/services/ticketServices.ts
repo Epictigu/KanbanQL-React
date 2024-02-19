@@ -8,7 +8,7 @@ import {
     FetchResult,
     gql,
     InMemoryCache,
-    NormalizedCacheObject
+    NormalizedCacheObject,
 } from "@apollo/client";
 
 const API_URL = 'http://localhost:8080/graphql';
@@ -17,7 +17,9 @@ class TicketService {
 
     client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
         uri: API_URL,
-        cache: new InMemoryCache(),
+        cache: new InMemoryCache({
+            addTypename: false
+        }),
         connectToDevTools: true
     });
 
@@ -81,33 +83,20 @@ class TicketService {
         })
         .then((result) => {
             ticket.comments = result.data.data.getAllCommentsForTicketId;
-            this.fixTicketDetailsComments(ticket);
         });
     }
 
     public fixTicketDetails(ticket: TicketDetails): void {
         ticket.status = this.convertStatusToEnumValue(ticket.status);
         ticket.priority = this.convertPriorityToEnumValue(ticket.priority);
-        ticket.creationDate = this.formatDateFromResponse(ticket.creationDate.toString());
-        this.fixTicketDetailsComments(ticket);
     }
 
-    private fixTicketDetailsComments(ticket: TicketDetails): void {
-        ticket.comments.forEach((comment) => comment.creationDate = this.formatDateFromResponse(comment.creationDate.toString()));
+    public fixTicket(ticket: Ticket): void {
+        ticket.status = this.convertStatusToEnumValue(ticket.status);
+        ticket.priority = this.convertPriorityToEnumValue(ticket.priority);
     }
 
-    private formatDateFromResponse(dateString: string): Date {
-        let dateTimeSplit = dateString.split("T");
-        let dateParts = dateTimeSplit[0].split("-");
-        let timeParts = dateTimeSplit[1].split(".")[0].split(":");
 
-        return new Date(Number.parseInt(dateParts[0]),
-            Number.parseInt(dateParts[1]),
-            Number.parseInt(dateParts[2]),
-            Number.parseInt(timeParts[0]),
-            Number.parseInt(timeParts[1]),
-            Number.parseInt(timeParts[2]));
-    }
 
     public convertStatusToEnumValue(status: TicketStatus): TicketStatus {
         return TicketStatus[status as unknown as keyof typeof TicketStatus];
@@ -156,9 +145,9 @@ class TicketService {
         });
     }
 
-    public updatePriority(id: string, priority: Priority, callback: Function): void {
+    public updatePriority(id: string, priority: Priority): Promise<FetchResult<any>> {
         const priorityString: string = Priority[priority];
-        this.client.mutate({
+        return this.client.mutate({
             mutation: gql`
                 mutation updateTicket($id: String!) {
                     updateTicket(
@@ -169,21 +158,23 @@ class TicketService {
                     )
                     {
                         id,
-                        priority
+                        title,
+                        status,
+                        priority,
+                        tags {
+                            id
+                        }
                     }
                 }`,
             variables: {
                 id
             }
-        }).then(() => {
-            callback();
-        },
-        (error) => console.log(error));
+        });
 }
 
-    public updateStatus(id: string, status: TicketStatus, callback: Function): void {
+    public updateStatus(id: string, status: TicketStatus): Promise<FetchResult<any>> {
         const statusString: string = TicketStatus[status];
-        this.client.mutate({
+        return this.client.mutate({
             mutation: gql`
                 mutation updateTicket($id: String!) {
                     updateTicket(
@@ -193,21 +184,23 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        title,
+                        status,
+                        priority,
+                        tags {
+                            id
+                        }
                     }
                 }`,
             variables: {
-                id,
-                status
+                id
             }
-        }).then(() => {
-            callback();
-        },
-        (error) => console.log(error));
+        });
     }
 
-    public updateTags(ticket: Ticket): void {
-        this.client.mutate({
+    public updateTags(ticket: Ticket): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation updateTicket($id: String!, $tags: [UpdateTagRequest]) {
                     updateTicket(
@@ -217,20 +210,21 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        tags {
+                            id
+                        }
                     }
                 }`,
             variables: {
                 id: ticket.id,
                 tags: ticket.tags
             }
-        }).then(() => {
-            },
-            (error) => console.log(error));
+        });
     }
 
-    public updateTitle(id: string, title: string, ticketDetails?: TicketDetails): void {
-        this.client.mutate({
+    public updateTitle(id: string, title: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation updateTicket($id: String!, $title: String!) {
                     updateTicket(
@@ -240,23 +234,24 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        title,
+                        status,
+                        priority,
+                        tags {
+                            id
+                        }
                     }
                 }`,
             variables: {
                 id,
                 title
             }
-        }).then(() => {
-                if (ticketDetails) {
-                    ticketDetails.title = title;
-                }
-            },
-            (error) => console.log(error));
+        });
     }
 
-    public updateDescription(id: string, description: string, ticketDetails?: TicketDetails): void {
-        this.client.mutate({
+    public updateDescription(id: string, description: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation updateTicket($id: String!, $description: String!) {
                     updateTicket(
@@ -266,23 +261,19 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        description
                     }
                 }`,
             variables: {
                 id,
                 description
             }
-        }).then(() => {
-                if (ticketDetails) {
-                    ticketDetails.description = description;
-                }
-            },
-            (error) => console.log(error));
+        })
     }
 
-    public createComment(ticket: TicketDetails, comment: string): void {
-        this.client.mutate({
+    public createComment(ticket: TicketDetails, comment: string): Promise<FetchResult<any>> {
+        return this.client.mutate({
             mutation: gql`
                 mutation createComment($id: String!, $comment: String!) {
                     createComment(
@@ -292,17 +283,16 @@ class TicketService {
                         }
                     )
                     {
-                        id
+                        id,
+                        commentText,
+                        creationDate
                     }
                 }`,
             variables: {
                 id: ticket.id,
                 comment
             }
-        }).then(() => {
-                this.fetchUpdatedCommentList(ticket);
-            },
-            (error) => console.log(error));
+        });
     }
 }
 

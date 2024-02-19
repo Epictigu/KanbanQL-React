@@ -10,7 +10,7 @@ interface TicketViewProps {
     onTicketViewClosed: () => void;
 }
 
-function TicketView(props: TicketViewProps) {
+function TicketView(props: Readonly<TicketViewProps>) {
     return <div className="ticket-view">
         <BackgroundBlocker backgroundColor="rgba(50, 50, 50, 0.4)" customZIndex={25} onClick={props.onTicketViewClosed}/>
 
