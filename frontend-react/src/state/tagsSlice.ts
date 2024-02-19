@@ -1,16 +1,9 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Tag} from "../model/tag.ts";
 import TagService from "../services/tagService.ts";
+
 interface TagsState{
     tags: Tag[]
-}
-
-const fillInRandomColors = (tags: Tag[]) => {
-    tags.forEach(tag => tag.color = generateRandomColor());
-}
-const generateRandomColor = () => {
-    let hexColorString = (Math.random() * 0xfffff * 1000000).toString(16);
-    return '#' + hexColorString.slice(0, 6);
 }
 
 const initialState: TagsState = {
@@ -27,9 +20,7 @@ const tagsSlice = createSlice({
         builder
             .addCase(initializeTagsAsync.fulfilled, (state, action: PayloadAction<Tag[]|null>) => {
                 if(action.payload !== null){
-                    const tags: Tag[] = structuredClone(action.payload);
-                    fillInRandomColors(tags);
-                    state.tags = tags;
+                    state.tags = structuredClone(action.payload);
                 }
             })
             .addCase(deleteTagAsync.fulfilled, (state, action: PayloadAction<string|null>) => {
@@ -42,9 +33,7 @@ const tagsSlice = createSlice({
             })
             .addCase(createNewTagAsync.fulfilled, (state, action: PayloadAction<Tag|null>) => {
                 if(action.payload !== null){
-                    const newTag: Tag = structuredClone(action.payload);
-                    newTag.color = generateRandomColor();
-                    state.tags.push(newTag);
+                    state.tags.push(structuredClone(action.payload));
                 }
             })
     }
@@ -76,9 +65,9 @@ export const deleteTagAsync = createAsyncThunk(
 
 export const createNewTagAsync = createAsyncThunk(
     "tags/createNewTagAsync",
-    async (tagName: string) =>
-        await TagService.createNewTag(tagName).then((value) => {
-            const tag: Tag= value.data.createTag;
+    async (tag: Tag) =>
+        await TagService.createNewTag(tag).then((value) => {
+            const tag: Tag = value.data.createTag;
             return tag;
         }, (error) => {
             console.log(error);

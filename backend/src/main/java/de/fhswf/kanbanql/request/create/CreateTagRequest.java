@@ -20,4 +20,7 @@ public class CreateTagRequest {
      */
     @Nonnull
     private String tagName;
+
+    @Nonnull
+    private String color;
 }

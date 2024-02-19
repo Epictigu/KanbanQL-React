@@ -24,9 +24,11 @@ class TagServiceTest {
 
     private static final String TAG_ID = "tag/1";
     private static final String TAG_NAME = "TagName";
+    private static final String TAG_COLOR = "#ffffff";
 
     private final CreateTagRequest createTagRequest = CreateTagRequest.builder()
             .tagName(TAG_NAME)
+            .color(TAG_COLOR)
             .build();
 
     private final Tag firstTag = mock(Tag.class);
@@ -72,6 +74,13 @@ class TagServiceTest {
         when(tagRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
         Tag tag = cut.createTag(createTagRequest);
         assertEquals(TAG_NAME, tag.getTagName());
+    }
+
+    @Test
+    void testCreateTag_shouldSetTagColor() {
+        when(tagRepository.save(any())).thenAnswer(invocation -> invocation.getArguments()[0]);
+        Tag tag = cut.createTag(createTagRequest);
+        assertEquals(TAG_COLOR, tag.getColor());
     }
 
     @Test

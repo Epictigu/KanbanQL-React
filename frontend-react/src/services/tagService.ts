@@ -1,4 +1,5 @@
 import {ApolloClient, ApolloQueryResult, FetchResult, gql, InMemoryCache, NormalizedCacheObject} from "@apollo/client";
+import {Tag} from "../model/tag.ts";
 
 const API_URL = 'http://localhost:8080/graphql';
 
@@ -15,23 +16,26 @@ class TagService {
                 query {
                     getAllTags {
                         id,
-                        tagName
+                        tagName,
+                        color
                     }
                 }`
         });
     }
 
-    createNewTag(title: string): Promise<FetchResult<any>> {
+    createNewTag(tag: Tag): Promise<FetchResult<any>> {
         return this.client.mutate({
             mutation: gql`
-                mutation createTag($title: String!) {
-                    createTag (tag: {tagName: $title}) {
+                mutation createTag($title: String!, $color: String!) {
+                    createTag (tag: {tagName: $title, color: $color}) {
                         id,
-                        tagName
+                        tagName,
+                        color
                     }
                 }`,
             variables: {
-                title
+                title: tag.tagName,
+                color: tag.color
             }
         })
     }

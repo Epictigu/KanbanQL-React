@@ -24,6 +24,7 @@ type Ticket{
 type Tag {
     id: String
     tagName: String
+    color: String
     tickets: [Ticket]
 }
 
