@@ -42,16 +42,17 @@ public class DevTestSetup {
     }
 
     private void createTestTags() {
-        frontendTag = createTag("Frontend");
-        backendTag = createTag("Backend");
+        frontendTag = createTag("Frontend", "#ef0606");
+        backendTag = createTag("Backend", "#1b70de");
 
         frontendTag = tagRepository.save(frontendTag);
         backendTag = tagRepository.save(backendTag);
     }
 
-    private Tag createTag(String tagName) {
+    private Tag createTag(String tagName, String color) {
         Tag tag = new Tag();
         tag.setTagName(tagName);
+        tag.setColor(color);
         return tag;
     }
 

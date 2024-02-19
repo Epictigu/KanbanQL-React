@@ -59,6 +59,7 @@ public class TagService {
     public Tag createTag(CreateTagRequest tagRequest) {
         Tag tag = new Tag();
         tag.setTagName(tagRequest.getTagName());
+        tag.setColor(tagRequest.getColor());
         return tagRepository.save(tag);
     }
 

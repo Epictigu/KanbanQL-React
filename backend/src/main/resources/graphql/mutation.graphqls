@@ -5,7 +5,6 @@ type Mutation {
     updateTicket(ticket: UpdateTicketRequest): Ticket
     deleteTicket(id: String) : Ticket
     deleteTag(id: String) : Tag
-
 }
 
 input CreateTicketRequest {
@@ -14,16 +13,17 @@ input CreateTicketRequest {
     priority: Priority
 }
 
-input CreateTagRequest{
+input CreateTagRequest {
     tagName: String
+    color: String
 }
 
-input CreateCommentRequest{
+input CreateCommentRequest {
     commentText: String
     ticketId: String
 }
 
-input UpdateTicketRequest{
+input UpdateTicketRequest {
     id: String
     title: String
     description: String
@@ -32,12 +32,13 @@ input UpdateTicketRequest{
     tags: [UpdateTagRequest]
 }
 
-input UpdateTagRequest{
+input UpdateTagRequest {
     id: String
     tagName: String
+    color: String
 }
 
-input UpdateCommentRequest{
+input UpdateCommentRequest {
     id: String
     commentText: String
     ticket: UpdateTicketRequest

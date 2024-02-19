@@ -29,6 +29,8 @@ public class Tag {
 
     private String tagName;
 
+    private String color;
+
     @ManyToMany(mappedBy = "tags")
     private Set<Ticket> tickets;
 }
