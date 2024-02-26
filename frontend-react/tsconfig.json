@@ -22,10 +22,14 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": [
+      "cypress"
+    ]
   },
   "include": [
-    "src"
+    "src",
+    "cypress/e2e"
   ],
   "references": [
     {
