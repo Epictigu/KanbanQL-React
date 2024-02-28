@@ -2,7 +2,7 @@
 
 # KanbanQL
 
-*Explanation goes here*
+This application provides a basic kanban board with the help of React, Spring and GraphQL. The original project and backend were written in Vue, but to highlight the differences between Vue and React, this project has been rewritten in React.
 
 To run this app in development, just run the "runBackend" task. This starts the backend together with a H2 In-Memory database.
 To start the frontend additionally, under Windows a batch file ("runFrontend.bat") is provided to run and install the frontend,
